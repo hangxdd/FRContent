@@ -111,23 +111,26 @@
 </template>
 
 <script setup>
+import { computed } from 'vue';
 import { Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue'
 import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/vue/24/outline'
 import { authStore } from '../stores/authstore'
-import { useRouter } from 'vue-router';
+import { useRouter, useRoute } from 'vue-router';
 
 const useAuth = authStore();
 const router = useRouter();
+const route = useRoute();
 
 const logOutAndRedirect = () => {
     useAuth.logOut();
     router.push('/login');
 };
 
-const navigation = [
-    { name: 'Nav 1', href: '#', current: true },
-    { name: 'Nav 2', href: '#', current: false },
-    { name: 'Nav 3', href: '#', current: false },
-    { name: 'Nav 4', href: '#', current: false },
-]
+// Use a computed property for the navigation array
+const navigation = computed(() => [
+    { name: 'Home', href: '/', current: route.path === '/' },
+    { name: 'Scan', href: '/scan', current: route.path === '/scan' },
+    { name: 'FAQ', href: '/faq', current: route.path === '/faq' },
+    { name: 'About', href: '/about', current: route.path === '/about' },
+]);
 </script>
