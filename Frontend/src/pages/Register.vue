@@ -1,8 +1,12 @@
 <template>
     <div class="flex min-h-screen flex-1 flex-col justify-center px-6 py-12 lg:px-8">
         <div class="bg-gray-100 w-1/3 mx-auto p-4 rounded-xl shadow-md">
+            <div class="text-center -mb-10">
+                <img src="/FRContent.svg" alt="FRContent Logo" class="mx-auto h-16 w-auto">
+            </div>
             <div class="sm:mx-auto sm:w-full sm:max-w-sm">
-                <h2 class="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">Register an
+                <h2 class="mt-10 text-center text-md md:text-2xl font-bold leading-9 tracking-tight text-gray-900">
+                    Register an
                     account</h2>
             </div>
 

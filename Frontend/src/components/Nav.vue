@@ -13,9 +13,7 @@
                     </DisclosureButton>
                 </div>
                 <div class="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
-                    <!-- <div class="flex flex-shrink-0 items-center">
-                        <span class="font-bold text-white text-xl cursor-pointer border-b-2" href="#">FRContent</span>
-                    </div> -->
+                    <img src="/FRContent.svg" alt="FRContent Logo" class="h-8 w-auto sm:h-10">
                     <div class="hidden sm:ml-6 sm:block">
                         <div class="flex space-x-4">
                             <router-link v-for="item in navigation" :key="item.name" :to="item.href"

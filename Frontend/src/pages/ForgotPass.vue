@@ -1,6 +1,16 @@
 <template>
     <div class="flex min-h-screen flex-1 flex-col justify-center px-6 py-12 lg:px-8">
         <div class="bg-gray-100 w-1/3 mx-auto p-4 rounded-xl shadow-md">
+            <div class="grid grid-cols-3 items-center -mb-4">
+                <router-link to="/login" class="flex items-center justify-self-start">
+                    <FontAwesomeIcon :icon="['fas', 'arrow-left']" class="ml-2 mt-4 text-blue-600 hover:text-blue-500"
+                        size="2x" />
+                </router-link>
+                <div class="justify-self-center">
+                    <img src="/FRContent.svg" alt="FRContent Logo" class="h-16 w-auto" />
+                </div>
+                <div></div>
+            </div>
             <div class="sm:mx-auto sm:w-full sm:max-w-sm">
                 <h2 class="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
                     Reset Password
@@ -41,8 +51,13 @@
 import { ref } from "vue";
 import { useRouter } from "vue-router";
 import { authStore } from "../stores/authstore";
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { fas } from '@fortawesome/free-solid-svg-icons';
 
 import axios from "axios";
+
+library.add(fas);
 
 const router = useRouter();
 const useAuth = authStore();
