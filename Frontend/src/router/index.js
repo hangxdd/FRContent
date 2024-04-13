@@ -41,6 +41,14 @@ const routes = [
       title: "Register | FRContent",
     },
   },
+  {
+    path: "/scan",
+    name: "Scan",
+    component: () => import("../pages/Scan.vue"),
+    meta: {
+      title: "Scan | FRContent",
+    },
+  },
 ]
 
 const router = createRouter({
