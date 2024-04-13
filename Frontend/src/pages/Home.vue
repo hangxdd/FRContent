@@ -10,6 +10,9 @@
             </div>
             <div class="relative px-4 py-10 bg-white shadow-lg sm:rounded-3xl sm:p-20">
                 <div>
+                    <div class="flex justify-center items-center -mt-10">
+                        <img src="/FRContent.svg" alt="FRContent Logo" class="h-8 w-auto sm:h-10 mb-4">
+                    </div>
                     <h2 class="text-2xl font-bold text-center">Welcome, {{ useAuth.user.name }}!</h2>
                     <p class="text-center mt-4">Discover movies tailored to your emotions.</p>
                     <router-link to="/scan"
