@@ -2,7 +2,11 @@
 export default {
   content: ["./src/**/*.vue", "./src/**/*.js"],
   theme: {
-    extend: {},
+    extend: {
+      scale: {
+        "-1": "-1",
+      },
+    },
   },
   plugins: [],
 }
