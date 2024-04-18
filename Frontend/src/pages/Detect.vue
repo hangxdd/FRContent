@@ -9,6 +9,7 @@
           v-slot="{ selected }"
         >
           <button
+            @click="activeTab = category"
             :class="[
               'w-full rounded-lg py-2.5 text-sm font-medium leading-5',
               'ring-white/60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2',
@@ -85,13 +86,15 @@
 
 <script setup>
 import * as faceapi from "@vladmandic/face-api";
-import { onMounted, ref } from "vue";
+import { onBeforeUnmount, onMounted, ref, watchEffect } from "vue";
 import { authStore } from "../stores/authstore";
 import { TabGroup, TabList, Tab, TabPanels, TabPanel } from "@headlessui/vue";
 
 const useAuth = authStore();
 const isPlaying = ref(false);
 const lastEmotion = ref(null);
+
+let activeTab = ref("Detect");
 
 const categories = ref({
   Detect: [],
@@ -106,9 +109,27 @@ onMounted(async () => {
   await faceapi.nets.faceExpressionNet.loadFromUri("/models");
 });
 
+onBeforeUnmount(() => {
+  if (isPlaying.value) {
+    toggleVideo();
+  }
+});
+
+watchEffect(() => {
+  if (activeTab.value !== "Detect" && isPlaying.value) {
+    toggleVideo();
+  }
+});
+
 const detectEmotions = async () => {
   const videoElement = document.getElementById("myVideo");
   const canvas = document.getElementById("overlay");
+
+  // Check if the canvas element exists
+  if (!canvas) {
+    return;
+  }
+
   const context = canvas.getContext("2d");
   context.clearRect(0, 0, canvas.width, canvas.height);
 
