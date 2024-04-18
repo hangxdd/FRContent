@@ -42,11 +42,27 @@ const routes = [
     },
   },
   {
-    path: "/scan",
-    name: "Scan",
-    component: () => import("../pages/Scan.vue"),
+    path: "/detect",
+    name: "detect",
+    component: () => import("../pages/Detect.vue"),
     meta: {
-      title: "Scan | FRContent",
+      title: "Detect | FRContent",
+    },
+  },
+  {
+    path: "/faq",
+    name: "FAQ",
+    component: () => import("../pages/faq.vue"),
+    meta: {
+      title: "FAQ | FRContent",
+    },
+  },
+  {
+    path: "/about",
+    name: "About",
+    component: () => import("../pages/About.vue"),
+    meta: {
+      title: "About | FRContent",
     },
   },
 ]
