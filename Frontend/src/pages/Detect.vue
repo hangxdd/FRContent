@@ -26,14 +26,20 @@
           <!-- Check if it's the first tab -->
           <template v-if="category === 'Detect'">
             <div class="shadow-lg rounded-lg p-4">
-              <video
-                id="myVideo"
-                class="w-full rounded"
-                autoplay
-                muted
-                playsinline
-                v-show="isPlaying"
-              ></video>
+              <div class="relative">
+                <video
+                  id="myVideo"
+                  class="w-full rounded"
+                  autoplay
+                  muted
+                  playsinline
+                  v-show="isPlaying"
+                ></video>
+                <canvas
+                  id="overlay"
+                  class="absolute top-0 left-0 w-full h-full rounded"
+                ></canvas>
+              </div>
               <div class="flex flex-col justify-between mt-4">
                 <button
                   @click="toggleVideo"
@@ -77,13 +83,12 @@
 </template>
 
 <script setup>
-import * as faceAPI from "face-api.js";
+import * as faceapi from "@vladmandic/face-api";
 import { onMounted, ref } from "vue";
 import { authStore } from "../stores/authstore";
 import { TabGroup, TabList, Tab, TabPanels, TabPanel } from "@headlessui/vue";
 
 const useAuth = authStore();
-const videoRef = ref(null);
 const isPlaying = ref(false);
 
 const categories = ref({
@@ -94,10 +99,45 @@ const categories = ref({
 
 onMounted(async () => {
   useAuth.getUser();
+  await faceapi.nets.ssdMobilenetv1.loadFromUri("/models");
+  await faceapi.nets.faceLandmark68Net.loadFromUri("/models");
+  await faceapi.nets.faceExpressionNet.loadFromUri("/models");
 });
+
+const detectEmotions = async () => {
+  const videoElement = document.getElementById("myVideo");
+  const canvas = document.getElementById("overlay");
+  const context = canvas.getContext("2d");
+  context.clearRect(0, 0, canvas.width, canvas.height);
+
+  const detections = await faceapi
+    .detectAllFaces(videoElement, new faceapi.SsdMobilenetv1Options())
+    .withFaceLandmarks()
+    .withFaceExpressions();
+
+  detections.forEach((detection) => {
+    const { top, left, width, height } = detection.detection.box;
+    const bestMatch = detection.expressions.asSortedArray()[0];
+
+    context.beginPath();
+    context.rect(left, top, width, height);
+    context.lineWidth = 2;
+    context.strokeStyle = "blue";
+    context.fillStyle = "blue";
+    context.stroke();
+    context.font = "20px Arial";
+    context.fillStyle = "white";
+    context.fillText(bestMatch.expression, left, top > 20 ? top - 5 : 20);
+  });
+
+  if (isPlaying.value) {
+    setTimeout(detectEmotions, 100);
+  }
+};
 
 const toggleVideo = async () => {
   const videoElement = document.getElementById("myVideo");
+  const canvas = document.getElementById("overlay");
   if (isPlaying.value) {
     const tracks = videoElement.srcObject.getTracks();
     tracks.forEach((track) => track.stop());
@@ -109,6 +149,9 @@ const toggleVideo = async () => {
       videoElement.srcObject = stream;
       videoElement.onloadedmetadata = () => {
         videoElement.play();
+        canvas.width = videoElement.videoWidth;
+        canvas.height = videoElement.videoHeight;
+        detectEmotions();
       };
       isPlaying.value = true;
     } catch (err) {
