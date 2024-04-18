@@ -19,6 +19,7 @@
     "@vladmandic/face-api": "^1.7.13",
     "axios": "^1.6.8",
     "canvas": "^2.11.2",
+    "node-fetch": "^2.7.0",
     "pinia": "^2.1.7",
     "vue": "^3.4.21",
     "vue-router": "^4.3.0"

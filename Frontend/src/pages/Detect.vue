@@ -56,6 +56,7 @@
                 <button
                   v-show="isPlaying"
                   class="bg-green-600 hover:bg-green-500 text-white font-bold py-2 px-4 rounded"
+                  @click="captureEmotion"
                 >
                   Capture Emotion
                 </button>
@@ -90,6 +91,7 @@ import { TabGroup, TabList, Tab, TabPanels, TabPanel } from "@headlessui/vue";
 
 const useAuth = authStore();
 const isPlaying = ref(false);
+const lastEmotion = ref(null);
 
 const categories = ref({
   Detect: [],
@@ -118,6 +120,7 @@ const detectEmotions = async () => {
   detections.forEach((detection) => {
     const { top, left, width, height } = detection.detection.box;
     const bestMatch = detection.expressions.asSortedArray()[0];
+    lastEmotion.value = bestMatch.expression; // Update the last detected emotion
 
     context.beginPath();
     context.rect(left, top, width, height);
@@ -132,6 +135,29 @@ const detectEmotions = async () => {
 
   if (isPlaying.value) {
     setTimeout(detectEmotions, 100);
+  }
+};
+
+const captureEmotion = async () => {
+  try {
+    if (lastEmotion.value) {
+      const url = `https://api.themoviedb.org/3/search/movie?query=${lastEmotion.value}`;
+      const options = {
+        method: "GET",
+        headers: {
+          accept: "application/json",
+          Authorization:
+            "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIzNGYxM2UyZTE4MWJmMzM0ZDUxMGFiMzBjZDc5NTM1NyIsInN1YiI6IjY2MjEwMDVkODdhZTdiMDE0Y2Q3YmZiYyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.EiqnJa2IzQIaOuntxsikS0uVvaHMvX75lcPKVSLt3CQ",
+        },
+      };
+
+      fetch(url, options)
+        .then((res) => res.json())
+        .then((json) => console.log(json))
+        .catch((err) => console.error("error:" + err));
+    }
+  } catch (error) {
+    console.error("Error fetching data:", error);
   }
 };
 
