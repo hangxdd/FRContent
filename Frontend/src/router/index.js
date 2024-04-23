@@ -7,6 +7,7 @@ const routes = [
     component: () => import("../pages/Home.vue"),
     meta: {
       title: "Home | FRContent",
+      requiresAuth: true,
     },
   },
   {
@@ -47,6 +48,7 @@ const routes = [
     component: () => import("../pages/Detect.vue"),
     meta: {
       title: "Detect | FRContent",
+      requiresAuth: true,
     },
   },
   {
@@ -55,6 +57,7 @@ const routes = [
     component: () => import("../pages/faq.vue"),
     meta: {
       title: "FAQ | FRContent",
+      requiresAuth: true,
     },
   },
   {
@@ -63,6 +66,7 @@ const routes = [
     component: () => import("../pages/About.vue"),
     meta: {
       title: "About | FRContent",
+      requiresAuth: true,
     },
   },
 ]
