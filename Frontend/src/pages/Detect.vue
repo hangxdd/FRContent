@@ -125,18 +125,98 @@
                   </div>
                   <div v-if="movie.expanded" class="p-4 border-t">
                     <p class="text-gray-700 text-base">{{ movie.overview }}</p>
-                    <p class="mt-4">
-                        <strong>Where to watch:</strong>
-                        <ul>
-                            <li v-for="provider in (movie.providers?.flatrate || [])" :key="provider.provider_id">
-                                <a :href="movie.providers.link" target="_blank" class="text-blue-500 hover:underline">
-                                    <img :src="'https://image.tmdb.org/t/p/w500' + provider.logo_path" alt="" class="w-12 h-auto rounded-md" />
-                                </a>
-                            </li>
-                            <li v-if="!movie.providers?.flatrate || movie.providers.flatrate.length === 0">No providers found...</li>
+                    <div class="mt-4">
+                      <div
+                        v-if="
+                          movie.providers?.flatrate && movie.providers.flatrate.length > 0
+                        "
+                      >
+                        <h4 class="mt-2 font-bold">Stream:</h4>
+                        <ul class="flex flex-wrap">
+                          <li
+                            v-for="provider in movie.providers.flatrate"
+                            :key="'flatrate-' + provider.provider_id"
+                            class="mr-2 mb-1"
+                          >
+                            <a
+                              :href="movie.providers.link"
+                              target="_blank"
+                              class="text-blue-500 hover:underline"
+                            >
+                              <img
+                                :src="
+                                  'https://image.tmdb.org/t/p/w500' + provider.logo_path
+                                "
+                                alt=""
+                                class="w-12 h-auto rounded-md"
+                              />
+                            </a>
+                          </li>
                         </ul>
-                    </p>
-                </div>
+                      </div>
+                      <div
+                        v-if="movie.providers?.rent && movie.providers.rent.length > 0"
+                      >
+                        <h4 class="mt-2 font-bold">Rent:</h4>
+                        <ul class="flex flex-wrap">
+                          <li
+                            v-for="provider in movie.providers.rent"
+                            :key="'rent-' + provider.provider_id"
+                            class="mr-2 mb-1"
+                          >
+                            <a
+                              :href="movie.providers.link"
+                              target="_blank"
+                              class="text-blue-500 hover:underline"
+                            >
+                              <img
+                                :src="
+                                  'https://image.tmdb.org/t/p/w500' + provider.logo_path
+                                "
+                                alt=""
+                                class="w-12 h-auto rounded-md"
+                              />
+                            </a>
+                          </li>
+                        </ul>
+                      </div>
+                      <div v-if="movie.providers?.buy && movie.providers.buy.length > 0">
+                        <h4 class="mt-2 font-bold">Buy:</h4>
+                        <ul class="flex flex-wrap">
+                          <li
+                            v-for="provider in movie.providers.buy"
+                            :key="'buy-' + provider.provider_id"
+                            class="mr-2 mb-1"
+                          >
+                            <a
+                              :href="movie.providers.link"
+                              target="_blank"
+                              class="text-blue-500 hover:underline"
+                            >
+                              <img
+                                :src="
+                                  'https://image.tmdb.org/t/p/w500' + provider.logo_path
+                                "
+                                alt=""
+                                class="w-12 h-auto rounded-md"
+                              />
+                            </a>
+                          </li>
+                        </ul>
+                      </div>
+                      <p
+                        v-if="
+                          (!movie.providers?.flatrate ||
+                            movie.providers.flatrate.length === 0) &&
+                          (!movie.providers?.rent || movie.providers.rent.length === 0) &&
+                          (!movie.providers?.buy || movie.providers.buy.length === 0)
+                        "
+                        class="italic mt-2"
+                      >
+                        No providers found...
+                      </p>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
