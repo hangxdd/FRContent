@@ -68,52 +68,75 @@
 
           <!-- Content for Recommendations tab -->
           <template v-else-if="category === 'Recommendations'">
-            <div class="grid grid-cols-1 gap-4">
-              <div
-                v-for="(movie, index) in recommendedMovies"
-                :key="index"
-                class="bg-white rounded-lg shadow-md overflow-hidden"
-              >
+            <div class="bg-white shadow-lg rounded-lg p-6 mx-2 my-8">
+              <h2 class="text-2xl font-bold mb-2 text-primary-500">
+                Recommended movies
+                <!-- - {{ recommendedMovies.length }} -->
+              </h2>
+              <p class="text-gray-600 mb-4">
+                Based on the emotion: <strong>{{ emotionValue }}</strong>
+              </p>
+              <div class="grid grid-cols-1 gap-4">
                 <div
-                  @click="movie.expanded = !movie.expanded"
-                  class="cursor-pointer flex justify-between items-center p-4"
+                  v-for="(movie, index) in recommendedMovies"
+                  :key="index"
+                  class="bg-gray-100 rounded-lg shadow-md overflow-hidden transition-all duration-200"
                 >
-                  <div class="flex items-center">
-                    <img
-                      :src="'https://image.tmdb.org/t/p/w500' + movie.poster_path"
-                      alt="Movie poster"
-                      class="w-16 h-16 object-cover mr-4"
-                    />
-                    <div>
-                      <h2 class="font-bold text-xl mb-2">{{ movie.title }}</h2>
-                      <p><strong>Release date:</strong> {{ movie.release_date }}</p>
-                      <p><strong>Average vote:</strong> {{ movie.vote_average }}</p>
-                    </div>
-                  </div>
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    class="h-6 w-6 transform transition-transform duration-200"
-                    :class="{ 'rotate-180': movie.expanded }"
+                  <div
+                    @click="movie.expanded = !movie.expanded"
+                    class="cursor-pointer flex justify-between items-center p-4"
                   >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      d="M19 9l-7 7-7-7"
-                    ></path>
-                  </svg>
-                </div>
-                <div v-if="movie.expanded" class="p-4 border-t">
-                  <p class="text-gray-700 text-base">{{ movie.overview }}</p>
-                  <p class="mt-4">
-                    <strong>Where to watch:</strong>
-                    <a href="#" class="text-blue-500 hover:underline"
-                      >Link to streaming service</a
+                    <div class="flex items-center">
+                      <img
+                        :src="'https://image.tmdb.org/t/p/w500' + movie.poster_path"
+                        alt="Movie poster"
+                        class="w-16 h-16 object-cover mr-4 rounded"
+                      />
+                      <div>
+                        <h2 class="font-bold text-xl mb-2 text-primary-500">
+                          {{ movie.title }}
+                        </h2>
+                        <p class="text-gray-700">
+                          <strong>Genres:</strong> {{ movie.genres.join(", ") }}
+                        </p>
+                        <p class="text-gray-700">
+                          <strong>Release date:</strong> {{ movie.release_date }}
+                        </p>
+                        <p class="text-gray-700">
+                          <strong>Average vote:</strong> {{ movie.vote_average }}
+                        </p>
+                      </div>
+                    </div>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                      class="h-6 w-6 transform transition-transform duration-200 text-primary-500"
+                      :class="{ 'rotate-180': movie.expanded }"
                     >
-                  </p>
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M19 9l-7 7-7-7"
+                      ></path>
+                    </svg>
+                  </div>
+                  <div v-if="movie.expanded" class="p-4 border-t">
+                    <p class="text-gray-700 text-base">{{ movie.overview }}</p>
+                    <p class="mt-4">
+                        <strong>Where to watch:</strong>
+                        <ul>
+                            <li v-for="provider in (movie.providers?.flatrate || [])" :key="provider.provider_id">
+                                <a :href="movie.providers.link" target="_blank" class="text-blue-500 hover:underline">
+                                    <img :src="'https://image.tmdb.org/t/p/w500' + provider.logo_path" alt="" class="w-12 h-auto rounded-md" />
+                                </a>
+                            </li>
+                            <li v-if="!movie.providers?.flatrate || movie.providers.flatrate.length === 0">No providers found...</li>
+                        </ul>
+                    </p>
+                </div>
                 </div>
               </div>
             </div>
@@ -133,14 +156,16 @@
 
 <script setup>
 import * as faceapi from "@vladmandic/face-api";
-import { onBeforeUnmount, onMounted, ref, watchEffect } from "vue";
+import { onBeforeUnmount, onMounted, ref, watchEffect, computed } from "vue";
 import { authStore } from "../stores/authstore";
 import { TabGroup, TabList, Tab, TabPanels, TabPanel } from "@headlessui/vue";
 
 const useAuth = authStore();
 const isPlaying = ref(false);
 const lastEmotion = ref(null);
+const recommendedEmotion = ref(null);
 const recommendedMovies = ref([]);
+const genres = ref([]);
 
 const activeTab = ref("Detect");
 
@@ -157,6 +182,20 @@ onMounted(async () => {
   await faceapi.nets.ssdMobilenetv1.loadFromUri("/models");
   await faceapi.nets.faceLandmark68Net.loadFromUri("/models");
   await faceapi.nets.faceExpressionNet.loadFromUri("/models");
+
+  // Fetch the list of all genres
+  const url = "https://api.themoviedb.org/3/genre/movie/list";
+  const options = {
+    method: "GET",
+    headers: {
+      accept: "application/json",
+      Authorization:
+        "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIzNGYxM2UyZTE4MWJmMzM0ZDUxMGFiMzBjZDc5NTM1NyIsInN1YiI6IjY2MjEwMDVkODdhZTdiMDE0Y2Q3YmZiYyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.EiqnJa2IzQIaOuntxsikS0uVvaHMvX75lcPKVSLt3CQ",
+    },
+  };
+  const response = await fetch(url, options);
+  const json = await response.json();
+  genres.value = json.genres;
 });
 
 onBeforeUnmount(() => {
@@ -170,6 +209,10 @@ watchEffect(() => {
     toggleVideo();
   }
 });
+
+const emotionValue = computed(() =>
+  recommendedEmotion.value ? recommendedEmotion.value : "No emotion detected"
+);
 
 const detectEmotions = async () => {
   const videoElement = document.getElementById("myVideo");
@@ -235,6 +278,40 @@ const getKeywords = async (emotion) => {
 const mapEmotionToKeywords = (emotion) => {
   const mappings = {
     neutral: ["documentary", "biography", "news", "reality-tv", "history"],
+    surprised: [
+      "thriller",
+      "mystery",
+      "horror",
+      "sci-fi",
+      "suspense",
+      "crime",
+      "action",
+      "adventure",
+      "fantasy",
+      "drama",
+    ],
+    fearful: [
+      "horror",
+      "thriller",
+      "mystery",
+      "suspense",
+      "crime",
+      "drama",
+      "sci-fi",
+      "dark",
+      "ghost",
+      "zombie",
+      "supernatural",
+      "haunted",
+      "alien",
+      "monster",
+      "apocalyptic",
+      "disaster",
+      "psychological",
+      "disturbing",
+      "gore",
+      "slasher",
+    ],
     // Add more mappings if needed
   };
 
@@ -250,39 +327,35 @@ const captureEmotion = async () => {
         const emotionKeywords = await getKeywords(emotion);
         keywords = [...keywords, ...emotionKeywords];
       }
-      const keywordIds = keywords.map((keyword) => keyword.id);
 
-      console.log(`Emotion: ${lastEmotion.value}`);
-      console.log(`Keywords: ${keywords.map((keyword) => keyword.name).join(", ")}`);
-
-      // Fetch the top 5 movies for each keyword
-      const movies = [];
-      for (const keywordId of keywordIds) {
-        const url = `https://api.themoviedb.org/3/discover/movie?sort_by=vote_average.desc&with_keywords=${keywordId}&page=1&vote_count.gte=1000`;
-        const options = {
-          method: "GET",
-          headers: {
-            accept: "application/json",
-            Authorization:
-              "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIzNGYxM2UyZTE4MWJmMzM0ZDUxMGFiMzBjZDc5NTM1NyIsInN1YiI6IjY2MjEwMDVkODdhZTdiMDE0Y2Q3YmZiYyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.EiqnJa2IzQIaOuntxsikS0uVvaHMvX75lcPKVSLt3CQ",
-          },
-        };
-
-        const response = await fetch(url, options);
-        const json = await response.json();
-
-        // Extract the top 5 movies
-        const topMovies = json.results.slice(0, 6);
-        movies.push(...topMovies);
+      // Randomly select a few keywords
+      const selectedKeywords = [];
+      while (selectedKeywords.length < 3 && keywords.length > 0) {
+        const randomIndex = Math.floor(Math.random() * keywords.length);
+        selectedKeywords.push(keywords[randomIndex]);
+        keywords.splice(randomIndex, 1); // Remove the selected keyword
       }
 
-      // Sort the movies by vote average and take the top 5
+      const keywordIds = selectedKeywords.map((keyword) => keyword.id);
+
+      console.log(`Emotion: ${lastEmotion.value}`);
+      console.log(
+        `Keywords: ${selectedKeywords.map((keyword) => keyword.name).join(", ")}`
+      );
+
+      recommendedEmotion.value = lastEmotion.value;
+
+      // Fetch the top 3 movies for each keyword in parallel
+      const moviePromises = keywordIds.map((keywordId) => fetchTopMovie(keywordId));
+      const movies = (await Promise.all(moviePromises)).flat();
+
+      // Sort the movies by vote average and take the top 3
       movies.sort((a, b) => b.vote_average - a.vote_average);
       recommendedMovies.value = movies
-        .slice(0, 5)
+        .slice(0, 3)
         .map((movie) => ({ ...movie, expanded: false }));
 
-      console.log(movies); // Corrected line
+      console.log(movies);
 
       // Find the index of the "Recommendations" tab
       const index = Object.keys(categories.value).indexOf("Recommendations");
@@ -293,6 +366,37 @@ const captureEmotion = async () => {
   } catch (error) {
     console.error("Error fetching data:", error);
   }
+};
+
+const fetchTopMovie = async (keywordId) => {
+  const url = `https://api.themoviedb.org/3/discover/movie?sort_by=vote_average.desc&with_keywords=${keywordId}&page=1`;
+  const options = {
+    method: "GET",
+    headers: {
+      accept: "application/json",
+      Authorization:
+        "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIzNGYxM2UyZTE4MWJmMzM0ZDUxMGFiMzBjZDc5NTM1NyIsInN1YiI6IjY2MjEwMDVkODdhZTdiMDE0Y2Q3YmZiYyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.EiqnJa2IzQIaOuntxsikS0uVvaHMvX75lcPKVSLt3CQ",
+    },
+  };
+
+  const response = await fetch(url, options);
+  const json = await response.json();
+
+  const topMovies = json.results.slice(0, 3).map(async (movie) => {
+    const providersUrl = `https://api.themoviedb.org/3/movie/${movie.id}/watch/providers`;
+    const providersResponse = await fetch(providersUrl, options);
+    const providersJson = await providersResponse.json();
+
+    return {
+      ...movie,
+      genres: movie.genre_ids.map(
+        (id) => genres.value.find((genre) => genre.id === id)?.name || "Unknown"
+      ),
+      providers: providersJson.results.US, // Change 'US' to your desired country code
+    };
+  });
+
+  return Promise.all(topMovies);
 };
 
 const toggleVideo = async () => {
