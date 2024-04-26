@@ -147,7 +147,14 @@
                     </svg>
                   </div>
                   <div v-if="movie.expanded" class="p-4 border-t">
-                    <p class="text-gray-700 text-base">{{ movie.overview }}</p>
+                    <p
+                      class="text-gray-700 text-base"
+                      v-html="
+                        movie.overview
+                          ? movie.overview
+                          : '<i>No overview available...</i>'
+                      "
+                    ></p>
                     <div class="mt-4">
                       <div
                         v-if="
@@ -329,7 +336,14 @@
                     </svg>
                   </div>
                   <div v-if="movie.expanded" class="p-4 border-t">
-                    <p class="text-gray-700 text-base">{{ movie.overview }}</p>
+                    <p
+                      class="text-gray-700 text-base"
+                      v-html="
+                        movie.overview
+                          ? movie.overview
+                          : '<i>No overview available...</i>'
+                      "
+                    ></p>
                     <div class="mt-4">
                       <div
                         v-if="
