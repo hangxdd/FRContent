@@ -12,7 +12,7 @@
           <button
             @click="activeTab = category"
             :class="[
-              'w-full rounded-lg py-2.5 text-sm font-medium leading-5',
+              'w-full rounded-lg py-2.5 px-1.5 text-sm font-medium leading-5',
               'ring-white/60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2',
               selected
                 ? 'bg-white text-blue-600 shadow'
@@ -426,6 +426,10 @@
               </div>
             </div>
           </template>
+
+          <template v-else-if="category === 'Favourites'">
+            <!-- Content for Favourites tab -->
+          </template>
         </TabPanel>
       </TabPanels>
     </TabGroup>
@@ -454,6 +458,7 @@ const categories = ref({
   Detect: [],
   Recommendations: [],
   History: [],
+  Favourites: [],
 });
 
 onMounted(async () => {
