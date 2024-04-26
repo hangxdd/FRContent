@@ -31,4 +31,13 @@ class HistoryMoviesController extends Controller
         return response()->json($movies);
     }
 
+    public function deleteAllForUser($userId)
+    {
+        $deletedRows = HistoryMovie::where('user_id', $userId)->delete();
+
+        if ($deletedRows > 0)
+            return response()->json('Successfully deleted all history movies for the user');
+        else
+            return response()->json('No history movies found for the user');
+    }
 }

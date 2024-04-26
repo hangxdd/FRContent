@@ -10,3 +10,4 @@ Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
 
 Route::post('/history_movies', [HistoryMoviesController::class, 'store']);
 Route::get('/history_movies/{userId}', [HistoryMoviesController::class, 'getMoviesForUser']);
+Route::delete('/users/{userId}/history', [HistoryMoviesController::class, 'deleteAllForUser']);
