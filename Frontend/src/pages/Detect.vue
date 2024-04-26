@@ -251,7 +251,8 @@
               v-if="!categories.History || categories.History.length === 0"
               class="text-red-500 text-center text-2xl font-bold mt-10 -mb-10"
             >
-              No history movies found
+              No history movies found <br />
+              may need to reload the page
             </div>
             <div
               v-if="categories.History && categories.History.length > 0"
