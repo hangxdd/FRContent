@@ -259,6 +259,7 @@ import * as faceapi from "@vladmandic/face-api";
 import { onBeforeUnmount, onMounted, ref, watchEffect, computed } from "vue";
 import { authStore } from "../stores/authstore";
 import { TabGroup, TabList, Tab, TabPanels, TabPanel } from "@headlessui/vue";
+import axios from "axios";
 
 const useAuth = authStore();
 const isPlaying = ref(false);
@@ -278,7 +279,7 @@ const categories = ref({
 });
 
 onMounted(async () => {
-  useAuth.getUser();
+  await useAuth.getUser();
   await faceapi.nets.ssdMobilenetv1.loadFromUri("/models");
   await faceapi.nets.faceLandmark68Net.loadFromUri("/models");
   await faceapi.nets.faceExpressionNet.loadFromUri("/models");
@@ -463,6 +464,23 @@ const captureEmotion = async () => {
       // Simulate a click event on the "Recommendations" tab
       tabs.value[index].$el.click();
     }
+
+    const userId = useAuth.user.id;
+    const movieIds = recommendedMovies.value.map((movie) => movie.id);
+
+    movieIds.forEach((movieId) => {
+      axios
+        .post("/api/history_movies", {
+          user_id: userId,
+          movie_id: movieId,
+        })
+        .then((response) => {
+          console.log(response.data);
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    });
   } catch (error) {
     console.error("Error fetching data:", error);
   }
