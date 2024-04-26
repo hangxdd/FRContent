@@ -244,8 +244,156 @@
 
           <!-- Content for History tab -->
           <template v-else-if="category === 'History'">
-            <div>
-              <!-- Your History content goes here -->
+            <div
+              v-if="!categories.History || categories.History.length === 0"
+              class="text-red-500 text-center text-2xl font-bold mt-10 -mb-10"
+            >
+              No data
+            </div>
+            <div class="bg-white shadow-lg rounded-lg p-6 mx-2 my-8">
+              <div class="grid grid-cols-1 gap-4">
+                <div
+                  v-for="(movie, index) in categories.History"
+                  :key="index"
+                  class="bg-gray-100 rounded-lg shadow-md overflow-hidden transition-all duration-200"
+                >
+                  <div
+                    @click="movie.expanded = !movie.expanded"
+                    class="cursor-pointer flex justify-between items-center p-4"
+                  >
+                    <div class="flex items-center">
+                      <img
+                        :src="'https://image.tmdb.org/t/p/w500' + movie.poster_path"
+                        alt="Movie poster"
+                        class="w-16 h-16 object-cover mr-4 rounded"
+                      />
+                      <div>
+                        <h2 class="font-bold text-xl mb-2 text-primary-500">
+                          {{ movie.title }}
+                        </h2>
+                        <p class="text-gray-700">
+                          <strong>Genres:</strong> {{ movie.genres.join(", ") }}
+                        </p>
+                        <p class="text-gray-700">
+                          <strong>Release date:</strong> {{ movie.release_date }}
+                        </p>
+                        <p class="text-gray-700">
+                          <strong>Average vote:</strong> {{ movie.vote_average }}
+                        </p>
+                      </div>
+                    </div>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                      class="h-6 w-6 transform transition-transform duration-200 text-primary-500"
+                      :class="{ 'rotate-180': movie.expanded }"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M19 9l-7 7-7-7"
+                      ></path>
+                    </svg>
+                  </div>
+                  <div v-if="movie.expanded" class="p-4 border-t">
+                    <p class="text-gray-700 text-base">{{ movie.overview }}</p>
+                    <div class="mt-4">
+                      <div
+                        v-if="
+                          movie.providers?.flatrate && movie.providers.flatrate.length > 0
+                        "
+                      >
+                        <h4 class="mt-2 font-bold">Stream:</h4>
+                        <ul class="flex flex-wrap">
+                          <li
+                            v-for="provider in movie.providers.flatrate"
+                            :key="'flatrate-' + provider.provider_id"
+                            class="mr-2 mb-1"
+                          >
+                            <a
+                              :href="movie.providers.link"
+                              target="_blank"
+                              class="text-blue-500 hover:underline"
+                            >
+                              <img
+                                :src="
+                                  'https://image.tmdb.org/t/p/w500' + provider.logo_path
+                                "
+                                alt=""
+                                class="w-12 h-auto rounded-md"
+                              />
+                            </a>
+                          </li>
+                        </ul>
+                      </div>
+                      <div
+                        v-if="movie.providers?.rent && movie.providers.rent.length > 0"
+                      >
+                        <h4 class="mt-2 font-bold">Rent:</h4>
+                        <ul class="flex flex-wrap">
+                          <li
+                            v-for="provider in movie.providers.rent"
+                            :key="'rent-' + provider.provider_id"
+                            class="mr-2 mb-1"
+                          >
+                            <a
+                              :href="movie.providers.link"
+                              target="_blank"
+                              class="text-blue-500 hover:underline"
+                            >
+                              <img
+                                :src="
+                                  'https://image.tmdb.org/t/p/w500' + provider.logo_path
+                                "
+                                alt=""
+                                class="w-12 h-auto rounded-md"
+                              />
+                            </a>
+                          </li>
+                        </ul>
+                      </div>
+                      <div v-if="movie.providers?.buy && movie.providers.buy.length > 0">
+                        <h4 class="mt-2 font-bold">Buy:</h4>
+                        <ul class="flex flex-wrap">
+                          <li
+                            v-for="provider in movie.providers.buy"
+                            :key="'buy-' + provider.provider_id"
+                            class="mr-2 mb-1"
+                          >
+                            <a
+                              :href="movie.providers.link"
+                              target="_blank"
+                              class="text-blue-500 hover:underline"
+                            >
+                              <img
+                                :src="
+                                  'https://image.tmdb.org/t/p/w500' + provider.logo_path
+                                "
+                                alt=""
+                                class="w-12 h-auto rounded-md"
+                              />
+                            </a>
+                          </li>
+                        </ul>
+                      </div>
+                      <p
+                        v-if="
+                          (!movie.providers?.flatrate ||
+                            movie.providers.flatrate.length === 0) &&
+                          (!movie.providers?.rent || movie.providers.rent.length === 0) &&
+                          (!movie.providers?.buy || movie.providers.buy.length === 0)
+                        "
+                        class="italic mt-2"
+                      >
+                        No providers found...
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </template>
         </TabPanel>
@@ -297,6 +445,8 @@ onMounted(async () => {
   const response = await fetch(url, options);
   const json = await response.json();
   genres.value = json.genres;
+
+  await fetchUserHistoryMovies();
 });
 
 onBeforeUnmount(() => {
@@ -310,6 +460,50 @@ watchEffect(() => {
     toggleVideo();
   }
 });
+
+const fetchUserHistoryMovies = async () => {
+  try {
+    const userId = useAuth.user.id;
+    const response = await axios.get(`/api/history_movies/${userId}`);
+    const movieObjects = response.data;
+
+    const moviePromises = movieObjects.map((movieObject) =>
+      fetchMovieData(movieObject.movie_id)
+    );
+    const movies = await Promise.all(moviePromises);
+
+    categories.value.History = movies;
+  } catch (error) {
+    console.error("Error fetching user history movies:", error);
+  }
+};
+
+const fetchMovieData = async (movieId) => {
+  const url = `https://api.themoviedb.org/3/movie/${movieId}`;
+  const providersUrl = `https://api.themoviedb.org/3/movie/${movieId}/watch/providers`;
+  const options = {
+    method: "GET",
+    headers: {
+      accept: "application/json",
+      Authorization:
+        "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIzNGYxM2UyZTE4MWJmMzM0ZDUxMGFiMzBjZDc5NTM1NyIsInN1YiI6IjY2MjEwMDVkODdhZTdiMDE0Y2Q3YmZiYyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.EiqnJa2IzQIaOuntxsikS0uVvaHMvX75lcPKVSLt3CQ",
+    },
+  };
+
+  const [movieResponse, providersResponse] = await Promise.all([
+    fetch(url, options),
+    fetch(providersUrl, options),
+  ]);
+
+  const movie = await movieResponse.json();
+  const providers = await providersResponse.json();
+
+  return {
+    ...movie,
+    genres: movie.genres.map((genre) => genre.name),
+    providers: providers.results.US, // assuming you want providers for the US
+  };
+};
 
 const emotionValue = computed(() =>
   recommendedEmotion.value ? recommendedEmotion.value : "No emotion detected"

@@ -23,4 +23,12 @@ class HistoryMoviesController extends Controller
 
         return response()->json('Successfully inserted recommended movies into the database');
     }
+
+    public function getMoviesForUser($userId)
+    {
+        $movies = HistoryMovie::where('user_id', $userId)->get();
+
+        return response()->json($movies);
+    }
+
 }
