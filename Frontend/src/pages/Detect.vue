@@ -772,7 +772,7 @@ const captureEmotion = async () => {
 };
 
 const fetchTopMovie = async (keywordId) => {
-  const url = `https://api.themoviedb.org/3/discover/movie?sort_by=vote_average.desc&with_keywords=${keywordId}&page=1`;
+  const url = `https://api.themoviedb.org/3/discover/movie?sort_by=vote_count.desc&with_keywords=${keywordId}&page=1`;
   const options = {
     method: "GET",
     headers: {
