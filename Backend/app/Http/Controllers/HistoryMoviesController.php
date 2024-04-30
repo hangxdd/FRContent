@@ -3,11 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\HistoryMovie; // Import the HistoryMovie model
+use App\Models\HistoryMovie;
 
 class HistoryMoviesController extends Controller
 {
-    public function store(Request $request)
+    public function storeHistoryMovies(Request $request)
     {
         $request->validate([
             'user_id' => 'required',

@@ -455,6 +455,26 @@
                       </svg>
                       Delete
                     </button>
+                    <button
+                      class="w-full bg-yellow-500 hover:bg-yellow-400 text-white font-bold p-2 mt-4 rounded flex justify-center items-center"
+                      @click="toggleFavouriteMovie(movie.id)"
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        :fill="isFavourited ? 'white' : 'none'"
+                        viewBox="0 0 24 24"
+                        stroke-width="1.5"
+                        stroke="currentColor"
+                        class="w-6 h-6 mr-1"
+                      >
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          d="M11.48 3.499a.562.562 0 0 1 1.04 0l2.125 5.111a.563.563 0 0 0 .475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 0 0-.182.557l1.285 5.385a.562.562 0 0 1-.84.61l-4.725-2.885a.562.562 0 0 0-.586 0L6.982 20.54a.562.562 0 0 1-.84-.61l1.285-5.386a.562.562 0 0 0-.182-.557l-4.204-3.602a.562.562 0 0 1 .321-.988l5.518-.442a.563.563 0 0 0 .475-.345L11.48 3.5Z"
+                        />
+                      </svg>
+                      {{ isFavourited[movie.id] ? "Unfavourite" : "Favourite" }}
+                    </button>
                   </div>
                 </div>
               </div>
@@ -472,7 +492,7 @@
 
 <script setup>
 import * as faceapi from "@vladmandic/face-api";
-import { onBeforeUnmount, onMounted, ref, watchEffect, computed } from "vue";
+import { onBeforeUnmount, onMounted, ref, watchEffect, computed, reactive } from "vue";
 import { authStore } from "../stores/authstore";
 import { TabGroup, TabList, Tab, TabPanels, TabPanel } from "@headlessui/vue";
 import axios from "axios";
@@ -482,6 +502,7 @@ const isPlaying = ref(false);
 const lastEmotion = ref(null);
 const recommendedEmotion = ref(null);
 const recommendedMovies = ref([]);
+let isFavourited = reactive({});
 const genres = ref([]);
 
 const activeTab = ref("Detect");
@@ -516,6 +537,7 @@ onMounted(async () => {
   genres.value = json.genres;
 
   await fetchUserHistoryMovies();
+  await fetchFavouriteStatus();
 });
 
 onBeforeUnmount(() => {
@@ -593,6 +615,45 @@ const deleteHistoryMovie = async (movieId) => {
     );
   } catch (error) {
     console.error(`Error deleting movie with id ${movieId} from user history:`, error);
+  }
+};
+
+const toggleFavouriteMovie = async (movieId) => {
+  try {
+    const userId = useAuth.user.id;
+    if (isFavourited[movieId]) {
+      await axios.delete(`/api/favourite_movies/${userId}/${movieId}`);
+      isFavourited[movieId] = false;
+    } else {
+      // Check if the movie is already favorited by the user
+      const response = await axios.get(`/api/is_movie_favourited/${userId}/${movieId}`);
+      const isAlreadyFavourited = response.data.isFavourited;
+
+      if (!isAlreadyFavourited) {
+        await axios.post("/api/favourite_movies", { user_id: userId, movie_id: movieId });
+        isFavourited[movieId] = true;
+      } else {
+        await axios.delete(`/api/favourite_movies/${userId}/${movieId}`);
+        isFavourited[movieId] = false;
+      }
+    }
+  } catch (error) {
+    console.error(`Error toggling favourite status for movie with id ${movieId}:`, error);
+  }
+};
+
+const fetchFavouriteStatus = async () => {
+  try {
+    const userId = useAuth.user.id;
+    const response = await axios.get(`/api/favourite_movies/${userId}`);
+    const favouriteMovies = response.data;
+    const newIsFavourited = { ...isFavourited };
+    favouriteMovies.forEach((movie) => {
+      newIsFavourited[movie.id] = true;
+    });
+    isFavourited = newIsFavourited;
+  } catch (error) {
+    console.error("Error fetching favourite movies:", error);
   }
 };
 
