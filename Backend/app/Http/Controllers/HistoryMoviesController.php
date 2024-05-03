@@ -14,6 +14,16 @@ class HistoryMoviesController extends Controller
             'movie_id' => 'required',
         ]);
 
+        // Check if the movie already exists in the user's history
+        $existingMovie = HistoryMovie::where('user_id', $request->get('user_id'))
+            ->where('movie_id', $request->get('movie_id'))
+            ->first();
+
+        if ($existingMovie) {
+            // If the movie already exists, return a response indicating this
+            return response()->json('This movie is already in the user\'s history');
+        }
+
         $history_movie = new HistoryMovie([
             'user_id' => $request->get('user_id'),
             'movie_id' => $request->get('movie_id'),
