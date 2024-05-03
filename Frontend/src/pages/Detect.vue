@@ -487,7 +487,195 @@
           </template>
 
           <template v-else-if="category === 'Favourites'">
-            <!-- Content for Favourites tab -->
+            <div
+              v-if="!categories.Favourites || categories.Favourites.length === 0"
+              class="text-red-500 text-center text-2xl font-bold mt-10 -mb-10"
+            >
+              No favourited movies found <br />
+              may need to reload the page
+            </div>
+            <div
+              v-if="categories.Favourites && categories.Favourites.length > 0"
+              class="bg-white shadow-lg rounded-lg p-6 mx-2 my-8"
+            >
+              <h2 class="text-2xl font-bold mb-2 text-primary-500">Favourites</h2>
+              <p class="text-gray-600 mb-4">All your favourited movies.</p>
+              <div class="grid grid-cols-1 gap-4">
+                <div
+                  v-for="(movie, index) in categories.Favourites"
+                  :key="index"
+                  class="bg-gray-100 rounded-lg shadow-md overflow-hidden transition-all duration-200"
+                >
+                  <div
+                    @click="movie.expanded = !movie.expanded"
+                    class="cursor-pointer flex justify-between items-center p-4"
+                  >
+                    <div class="flex items-center">
+                      <img
+                        :src="'https://image.tmdb.org/t/p/w500' + movie.poster_path"
+                        alt="Movie poster"
+                        class="w-16 h-16 object-cover mr-4 rounded"
+                      />
+                      <div>
+                        <h2 class="font-bold text-xl mb-2 text-primary-500">
+                          {{ movie.title }}
+                        </h2>
+                        <p class="text-gray-700">
+                          <strong>Genres:</strong> {{ movie.genres.join(", ") }}
+                        </p>
+                        <p class="text-gray-700">
+                          <strong>Release date:</strong> {{ movie.release_date }}
+                        </p>
+                        <p class="text-gray-700">
+                          <strong>Average vote:</strong> {{ movie.vote_average }}
+                        </p>
+                      </div>
+                    </div>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                      class="h-6 w-6 transform transition-transform duration-200 text-primary-500"
+                      :class="{ 'rotate-180': movie.expanded }"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M19 9l-7 7-7-7"
+                      ></path>
+                    </svg>
+                  </div>
+                  <div v-if="movie.expanded" class="p-4 border-t">
+                    <p
+                      class="text-gray-700 text-base"
+                      v-html="
+                        movie.overview
+                          ? movie.overview
+                          : '<i>No overview available...</i>'
+                      "
+                    ></p>
+                    <div class="mt-4">
+                      <div
+                        v-if="
+                          movie.providers?.flatrate && movie.providers.flatrate.length > 0
+                        "
+                      >
+                        <h4 class="mt-2 font-bold">Stream:</h4>
+                        <ul class="flex flex-wrap">
+                          <li
+                            v-for="provider in movie.providers.flatrate"
+                            :key="'flatrate-' + provider.provider_id"
+                            class="mr-2 mb-1"
+                          >
+                            <a
+                              :href="movie.providers.link"
+                              target="_blank"
+                              class="text-blue-500 hover:underline"
+                            >
+                              <img
+                                :src="
+                                  'https://image.tmdb.org/t/p/w500' + provider.logo_path
+                                "
+                                alt=""
+                                class="w-12 h-auto rounded-md"
+                              />
+                            </a>
+                          </li>
+                        </ul>
+                      </div>
+                      <div
+                        v-if="movie.providers?.rent && movie.providers.rent.length > 0"
+                      >
+                        <h4 class="mt-2 font-bold">Rent:</h4>
+                        <ul class="flex flex-wrap">
+                          <li
+                            v-for="provider in movie.providers.rent"
+                            :key="'rent-' + provider.provider_id"
+                            class="mr-2 mb-1"
+                          >
+                            <a
+                              :href="movie.providers.link"
+                              target="_blank"
+                              class="text-blue-500 hover:underline"
+                            >
+                              <img
+                                :src="
+                                  'https://image.tmdb.org/t/p/w500' + provider.logo_path
+                                "
+                                alt=""
+                                class="w-12 h-auto rounded-md"
+                              />
+                            </a>
+                          </li>
+                        </ul>
+                      </div>
+                      <div v-if="movie.providers?.buy && movie.providers.buy.length > 0">
+                        <h4 class="mt-2 font-bold">Buy:</h4>
+                        <ul class="flex flex-wrap">
+                          <li
+                            v-for="provider in movie.providers.buy"
+                            :key="'buy-' + provider.provider_id"
+                            class="mr-2 mb-1"
+                          >
+                            <a
+                              :href="movie.providers.link"
+                              target="_blank"
+                              class="text-blue-500 hover:underline"
+                            >
+                              <img
+                                :src="
+                                  'https://image.tmdb.org/t/p/w500' + provider.logo_path
+                                "
+                                alt=""
+                                class="w-12 h-auto rounded-md"
+                              />
+                            </a>
+                          </li>
+                        </ul>
+                      </div>
+                      <p
+                        v-if="
+                          (!movie.providers?.flatrate ||
+                            movie.providers.flatrate.length === 0) &&
+                          (!movie.providers?.rent || movie.providers.rent.length === 0) &&
+                          (!movie.providers?.buy || movie.providers.buy.length === 0)
+                        "
+                        class="italic mt-2"
+                      >
+                        No providers found...
+                      </p>
+                    </div>
+                    <button
+                      class="w-full text-white font-bold p-2 mt-4 rounded flex justify-center items-center"
+                      :class="
+                        isFavourited[movie.id]
+                          ? 'bg-blue-600 hover:bg-blue-500'
+                          : 'bg-blue-300 hover:bg-blue-200'
+                      "
+                      @click="toggleFavouriteMovie(movie.id)"
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        :fill="isFavourited[movie.id] ? 'white' : 'none'"
+                        viewBox="0 0 24 24"
+                        stroke-width="1.5"
+                        stroke="currentColor"
+                        class="w-6 h-6 mr-1"
+                      >
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          d="M11.48 3.499a.562.562 0 0 1 1.04 0l2.125 5.111a.563.563 0 0 0 .475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 0 0-.182.557l1.285 5.385a.562.562 0 0 1-.84.61l-4.725-2.885a.562.562 0 0 0-.586 0L6.982 20.54a.562.562 0 0 1-.84-.61l1.285-5.386a.562.562 0 0 0-.182-.557l-4.204-3.602a.562.562 0 0 1 .321-.988l5.518-.442a.563.563 0 0 0 .475-.345L11.48 3.5Z"
+                        />
+                      </svg>
+                      {{ isFavourited[movie.id] ? "Unfavourite" : "Favourite" }}
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
           </template>
         </TabPanel>
       </TabPanels>
@@ -651,10 +839,16 @@ const fetchFavouriteMovies = async () => {
   try {
     const userId = useAuth.user.id;
     const response = await axios.get(`/api/favourite_movies/${userId}`);
-    const favouriteMovies = response.data;
-    favouriteMovies.forEach((movie) => {
-      isFavourited[movie.movie_id] = true;
+    const movieObjects = response.data;
+
+    const moviePromises = movieObjects.map((movieObject) => {
+      isFavourited[movieObject.movie_id] = true;
+      return fetchMovieData(movieObject.movie_id);
     });
+
+    const movies = await Promise.all(moviePromises);
+
+    categories.value.Favourites = movies;
   } catch (error) {
     console.error("Error fetching favourite movies:", error);
   }
