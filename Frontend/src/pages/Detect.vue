@@ -456,12 +456,17 @@
                       Delete
                     </button>
                     <button
-                      class="w-full bg-yellow-500 hover:bg-yellow-400 text-white font-bold p-2 mt-4 rounded flex justify-center items-center"
+                      class="w-full text-white font-bold p-2 mt-4 rounded flex justify-center items-center"
+                      :class="
+                        isFavourited[movie.id]
+                          ? 'bg-blue-600 hover:bg-blue-500'
+                          : 'bg-blue-300 hover:bg-blue-200'
+                      "
                       @click="toggleFavouriteMovie(movie.id)"
                     >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
-                        :fill="isFavourited ? 'white' : 'none'"
+                        :fill="isFavourited[movie.id] ? 'white' : 'none'"
                         viewBox="0 0 24 24"
                         stroke-width="1.5"
                         stroke="currentColor"
@@ -537,7 +542,7 @@ onMounted(async () => {
   genres.value = json.genres;
 
   await fetchUserHistoryMovies();
-  await fetchFavouriteStatus();
+  await fetchFavouriteMovies();
 });
 
 onBeforeUnmount(() => {
@@ -642,16 +647,14 @@ const toggleFavouriteMovie = async (movieId) => {
   }
 };
 
-const fetchFavouriteStatus = async () => {
+const fetchFavouriteMovies = async () => {
   try {
     const userId = useAuth.user.id;
     const response = await axios.get(`/api/favourite_movies/${userId}`);
     const favouriteMovies = response.data;
-    const newIsFavourited = { ...isFavourited };
     favouriteMovies.forEach((movie) => {
-      newIsFavourited[movie.id] = true;
+      isFavourited[movie.movie_id] = true;
     });
-    isFavourited = newIsFavourited;
   } catch (error) {
     console.error("Error fetching favourite movies:", error);
   }
