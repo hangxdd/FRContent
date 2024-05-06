@@ -41,6 +41,12 @@
                   id="overlay"
                   class="absolute top-0 left-0 w-full h-full rounded"
                 ></canvas>
+                <div
+                  v-show="isGenerating"
+                  class="absolute top-0 left-0 w-full h-full rounded bg-gray-900 bg-opacity-80 flex items-center justify-center text-white text-2xl"
+                >
+                  Generating movies...
+                </div>
               </div>
               <div class="flex flex-col justify-between mt-4">
                 <button
@@ -724,6 +730,7 @@ const lastEmotion = ref(null);
 const recommendedEmotion = ref(null);
 const recommendedMovies = ref([]);
 let isFavourited = reactive({});
+const isGenerating = ref(false);
 const genres = ref([]);
 
 const activeTab = ref("Detect");
@@ -987,6 +994,7 @@ const mapEmotionToKeywords = (emotion) => {
 };
 
 const captureEmotion = async () => {
+  isGenerating.value = true;
   try {
     if (lastEmotion.value) {
       const mappedEmotions = mapEmotionToKeywords(lastEmotion.value);
@@ -1050,6 +1058,8 @@ const captureEmotion = async () => {
     });
   } catch (error) {
     console.error("Error fetching data:", error);
+  } finally {
+    isGenerating.value = false;
   }
 };
 
