@@ -298,7 +298,10 @@
               class="bg-white shadow-lg rounded-lg p-6 mx-2 my-8"
             >
               <h2 class="text-2xl font-bold mb-2 text-primary-500">History</h2>
-              <p class="text-gray-600 mb-4">All your previously recommended movies.</p>
+              <p class="text-gray-600 mb-2">All your previously recommended movies.</p>
+              <p class="text-gray-600 mb-4">
+                Movies fetched: <strong>{{ histMovieCount }}</strong>
+              </p>
               <button
                 v-if="categories.History && categories.History.length > 0"
                 class="w-full bg-red-600 hover:bg-red-500 text-white font-bold p-2 mb-4 rounded flex justify-center items-center"
@@ -532,7 +535,10 @@
               class="bg-white shadow-lg rounded-lg p-6 mx-2 my-8"
             >
               <h2 class="text-2xl font-bold mb-2 text-primary-500">Favourites</h2>
-              <p class="text-gray-600 mb-4">All your favourited movies.</p>
+              <p class="text-gray-600 mb-2">All your favourited movies.</p>
+              <p class="text-gray-600 mb-4">
+                Movies fetched: <strong>{{ favMovieCount }}</strong>
+              </p>
               <div class="grid grid-cols-1 gap-4">
                 <div
                   v-for="(movie, index) in categories.Favourites"
@@ -732,6 +738,8 @@ const recommendedMovies = ref([]);
 let isFavourited = reactive({});
 const isGenerating = ref(false);
 const genres = ref([]);
+const histMovieCount = computed(() => categories.value.History.length);
+const favMovieCount = computed(() => categories.value.Favourites.length);
 
 const activeTab = ref("Detect");
 
