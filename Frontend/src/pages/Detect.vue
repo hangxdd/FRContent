@@ -161,11 +161,18 @@
                     <p class="text-red-500 text-base" v-else>
                       <i>No overview available...</i>
                     </p>
-                    <div v-if="movie.trailers && movie.trailers.length > 0" class="mt-4">
-                      <h4 class="mt-2 font-bold text-gray-700">Trailer:</h4>
-                      <div class="relative" style="padding-bottom: 56.25%">
+                    <div
+                      v-if="movie.trailers && movie.trailers.length > 0"
+                      class="mt-4 relative"
+                    >
+                      <div
+                        class="absolute top-0 left-0 w-full h-full bg-black bg-opacity-90 flex items-center justify-center z-10 hover:opacity-0 opacity-100 transition-opacity duration-500 hover:pointer-events-none"
+                      >
+                        <h4 class="mt-2 text-2xl font-bold text-gray-300">Trailer</h4>
+                      </div>
+                      <div style="padding-bottom: 56.25%">
                         <iframe
-                          class="absolute top-0 left-0 w-full h-full"
+                          class="absolute top-0 left-0 w-full h-full z-0"
                           :src="'https://www.youtube.com/embed/' + movie.trailers[0].key"
                           frameborder="0"
                           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -379,11 +386,18 @@
                     <p class="text-red-500 text-base" v-else>
                       <i>No overview available...</i>
                     </p>
-                    <div v-if="movie.trailers && movie.trailers.length > 0" class="mt-4">
-                      <h4 class="mt-2 font-bold text-gray-700">Trailer:</h4>
-                      <div class="relative" style="padding-bottom: 56.25%">
+                    <div
+                      v-if="movie.trailers && movie.trailers.length > 0"
+                      class="mt-4 relative"
+                    >
+                      <div
+                        class="absolute top-0 left-0 w-full h-full bg-black bg-opacity-90 flex items-center justify-center z-10 hover:opacity-0 opacity-100 transition-opacity duration-500 hover:pointer-events-none"
+                      >
+                        <h4 class="mt-2 text-2xl font-bold text-gray-300">Trailer</h4>
+                      </div>
+                      <div style="padding-bottom: 56.25%">
                         <iframe
-                          class="absolute top-0 left-0 w-full h-full"
+                          class="absolute top-0 left-0 w-full h-full z-0"
                           :src="'https://www.youtube.com/embed/' + movie.trailers[0].key"
                           frameborder="0"
                           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -595,11 +609,18 @@
                     <p class="text-red-500 text-base" v-else>
                       <i>No overview available...</i>
                     </p>
-                    <div v-if="movie.trailers && movie.trailers.length > 0" class="mt-4">
-                      <h4 class="mt-2 font-bold text-gray-700">Trailer:</h4>
-                      <div class="relative" style="padding-bottom: 56.25%">
+                    <div
+                      v-if="movie.trailers && movie.trailers.length > 0"
+                      class="mt-4 relative"
+                    >
+                      <div
+                        class="absolute top-0 left-0 w-full h-full bg-black bg-opacity-90 flex items-center justify-center z-10 hover:opacity-0 opacity-100 transition-opacity duration-500 hover:pointer-events-none"
+                      >
+                        <h4 class="mt-2 text-2xl font-bold text-gray-300">Trailer</h4>
+                      </div>
+                      <div style="padding-bottom: 56.25%">
                         <iframe
-                          class="absolute top-0 left-0 w-full h-full"
+                          class="absolute top-0 left-0 w-full h-full z-0"
                           :src="'https://www.youtube.com/embed/' + movie.trailers[0].key"
                           frameborder="0"
                           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -740,6 +761,7 @@ const isGenerating = ref(false);
 const genres = ref([]);
 const histMovieCount = computed(() => categories.value.History.length);
 const favMovieCount = computed(() => categories.value.Favourites.length);
+const isHovered = ref(false);
 
 const activeTab = ref("Detect");
 
