@@ -250,7 +250,7 @@
                         "
                         class="italic mt-2 text-red-500"
                       >
-                        No providers found...
+                        No providers available...
                       </p>
                     </div>
                     <button
@@ -465,7 +465,7 @@
                         "
                         class="italic mt-2 text-red-500"
                       >
-                        No providers found...
+                        No providers available...
                       </p>
                     </div>
                     <button
@@ -678,7 +678,7 @@
                         "
                         class="italic mt-2 text-red-500"
                       >
-                        No providers found...
+                        No providers available...
                       </p>
                     </div>
                     <button
@@ -809,9 +809,10 @@ const fetchMovieData = async (movieId) => {
     },
   };
 
-  const [movieResponse, providersResponse] = await Promise.all([
+  const [movieResponse, providersResponse, trailers] = await Promise.all([
     fetch(url, options),
     fetch(providersUrl, options),
+    fetchMovieTrailers(movieId, options),
   ]);
 
   const movie = await movieResponse.json();
@@ -821,6 +822,7 @@ const fetchMovieData = async (movieId) => {
     ...movie,
     genres: movie.genres.map((genre) => genre.name),
     providers: providers.results.US, // assuming you want providers for the US
+    trailers: trailers,
   };
 };
 
@@ -1078,26 +1080,25 @@ const fetchTopMovie = async (keywordId) => {
   const json = await response.json();
 
   const topMovies = json.results.slice(0, 3).map(async (movie) => {
-    const providersUrl = `https://api.themoviedb.org/3/movie/${movie.id}/watch/providers`;
-    const providersResponse = await fetch(providersUrl, options);
-    const providersJson = await providersResponse.json();
-
-    const trailersUrl = `https://api.themoviedb.org/3/movie/${movie.id}/videos`;
-    const trailersResponse = await fetch(trailersUrl, options);
-    const trailersJson = await trailersResponse.json();
-    const trailers = trailersJson.results.filter((video) => video.type === "Trailer");
-
+    const movieData = await fetchMovieData(movie.id);
     return {
       ...movie,
       genres: movie.genre_ids.map(
         (id) => genres.value.find((genre) => genre.id === id)?.name || "Unknown"
       ),
-      providers: providersJson.results.US, // Change 'US' to your desired country code
-      trailers: trailers,
+      providers: movieData.providers,
+      trailers: movieData.trailers,
     };
   });
 
   return Promise.all(topMovies);
+};
+
+const fetchMovieTrailers = async (movieId, options) => {
+  const trailersUrl = `https://api.themoviedb.org/3/movie/${movieId}/videos`;
+  const trailersResponse = await fetch(trailersUrl, options);
+  const trailersJson = await trailersResponse.json();
+  return trailersJson.results.filter((video) => video.type === "Trailer");
 };
 
 const toggleVideo = async () => {
