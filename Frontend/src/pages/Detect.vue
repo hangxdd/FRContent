@@ -971,23 +971,19 @@ const mapEmotionToKeywords = (emotion) => {
       "drama",
       "sci-fi",
       "dark",
-      "ghost",
-      "zombie",
-      "supernatural",
-      "haunted",
-      "alien",
-      "monster",
-      "apocalyptic",
-      "disaster",
-      "psychological",
-      "disturbing",
-      "gore",
-      "slasher",
+      // ... other genres
     ],
     // Add more mappings if needed
   };
 
-  return mappings[emotion] || [emotion];
+  // If the emotion is in the mappings, return the mapped genres
+  if (emotion in mappings) {
+    return mappings[emotion];
+  }
+  // If the emotion is not in the mappings, return the emotion as a genre
+  else {
+    return [emotion];
+  }
 };
 
 const captureEmotion = async () => {
