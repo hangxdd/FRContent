@@ -148,31 +148,40 @@
                   </div>
                   <div v-if="movie.expanded" class="p-4 border-t">
                     <p
-                      class="text-gray-700 text-base"
-                      v-html="
-                        movie.overview
-                          ? movie.overview
-                          : '<i>No overview available...</i>'
-                      "
+                      class="text-base"
+                      v-if="movie.overview"
+                      v-html="movie.overview"
                     ></p>
+                    <p class="text-red-500 text-base" v-else>
+                      <i>No overview available...</i>
+                    </p>
+                    <div v-if="movie.trailers && movie.trailers.length > 0" class="mt-4">
+                      <h4 class="mt-2 font-bold text-gray-700">Trailer:</h4>
+                      <div class="relative" style="padding-bottom: 56.25%">
+                        <iframe
+                          class="absolute top-0 left-0 w-full h-full"
+                          :src="'https://www.youtube.com/embed/' + movie.trailers[0].key"
+                          frameborder="0"
+                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                          allowfullscreen
+                        ></iframe>
+                      </div>
+                    </div>
+                    <p v-else class="mt-4 italic text-red-500">No trailer available...</p>
                     <div class="mt-4">
                       <div
                         v-if="
                           movie.providers?.flatrate && movie.providers.flatrate.length > 0
                         "
                       >
-                        <h4 class="mt-2 font-bold">Stream:</h4>
+                        <h4 class="mt-2 font-bold text-gray-700">Stream:</h4>
                         <ul class="flex flex-wrap">
                           <li
                             v-for="provider in movie.providers.flatrate"
                             :key="'flatrate-' + provider.provider_id"
                             class="mr-2 mb-1"
                           >
-                            <a
-                              :href="movie.providers.link"
-                              target="_blank"
-                              class="text-blue-500 hover:underline"
-                            >
+                            <a :href="movie.providers.link" target="_blank">
                               <img
                                 :src="
                                   'https://image.tmdb.org/t/p/w500' + provider.logo_path
@@ -187,18 +196,14 @@
                       <div
                         v-if="movie.providers?.rent && movie.providers.rent.length > 0"
                       >
-                        <h4 class="mt-2 font-bold">Rent:</h4>
+                        <h4 class="mt-2 font-bold text-gray-700">Rent:</h4>
                         <ul class="flex flex-wrap">
                           <li
                             v-for="provider in movie.providers.rent"
                             :key="'rent-' + provider.provider_id"
                             class="mr-2 mb-1"
                           >
-                            <a
-                              :href="movie.providers.link"
-                              target="_blank"
-                              class="text-blue-500 hover:underline"
-                            >
+                            <a :href="movie.providers.link" target="_blank">
                               <img
                                 :src="
                                   'https://image.tmdb.org/t/p/w500' + provider.logo_path
@@ -211,18 +216,14 @@
                         </ul>
                       </div>
                       <div v-if="movie.providers?.buy && movie.providers.buy.length > 0">
-                        <h4 class="mt-2 font-bold">Buy:</h4>
+                        <h4 class="mt-2 font-bold text-gray-700">Buy:</h4>
                         <ul class="flex flex-wrap">
                           <li
                             v-for="provider in movie.providers.buy"
                             :key="'buy-' + provider.provider_id"
                             class="mr-2 mb-1"
                           >
-                            <a
-                              :href="movie.providers.link"
-                              target="_blank"
-                              class="text-blue-500 hover:underline"
-                            >
+                            <a :href="movie.providers.link" target="_blank">
                               <img
                                 :src="
                                   'https://image.tmdb.org/t/p/w500' + provider.logo_path
@@ -241,7 +242,7 @@
                           (!movie.providers?.rent || movie.providers.rent.length === 0) &&
                           (!movie.providers?.buy || movie.providers.buy.length === 0)
                         "
-                        class="italic mt-2"
+                        class="italic mt-2 text-red-500"
                       >
                         No providers found...
                       </p>
@@ -362,13 +363,26 @@
                   </div>
                   <div v-if="movie.expanded" class="p-4 border-t">
                     <p
-                      class="text-gray-700 text-base"
-                      v-html="
-                        movie.overview
-                          ? movie.overview
-                          : '<i>No overview available...</i>'
-                      "
+                      class="text-base"
+                      v-if="movie.overview"
+                      v-html="movie.overview"
                     ></p>
+                    <p class="text-red-500 text-base" v-else>
+                      <i>No overview available...</i>
+                    </p>
+                    <div v-if="movie.trailers && movie.trailers.length > 0" class="mt-4">
+                      <h4 class="mt-2 font-bold text-gray-700">Trailer:</h4>
+                      <div class="relative" style="padding-bottom: 56.25%">
+                        <iframe
+                          class="absolute top-0 left-0 w-full h-full"
+                          :src="'https://www.youtube.com/embed/' + movie.trailers[0].key"
+                          frameborder="0"
+                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                          allowfullscreen
+                        ></iframe>
+                      </div>
+                    </div>
+                    <p v-else class="mt-4 italic text-red-500">No trailer available...</p>
                     <div class="mt-4">
                       <div
                         v-if="
@@ -382,11 +396,7 @@
                             :key="'flatrate-' + provider.provider_id"
                             class="mr-2 mb-1"
                           >
-                            <a
-                              :href="movie.providers.link"
-                              target="_blank"
-                              class="text-blue-500 hover:underline"
-                            >
+                            <a :href="movie.providers.link" target="_blank">
                               <img
                                 :src="
                                   'https://image.tmdb.org/t/p/w500' + provider.logo_path
@@ -408,11 +418,7 @@
                             :key="'rent-' + provider.provider_id"
                             class="mr-2 mb-1"
                           >
-                            <a
-                              :href="movie.providers.link"
-                              target="_blank"
-                              class="text-blue-500 hover:underline"
-                            >
+                            <a :href="movie.providers.link" target="_blank">
                               <img
                                 :src="
                                   'https://image.tmdb.org/t/p/w500' + provider.logo_path
@@ -432,11 +438,7 @@
                             :key="'buy-' + provider.provider_id"
                             class="mr-2 mb-1"
                           >
-                            <a
-                              :href="movie.providers.link"
-                              target="_blank"
-                              class="text-blue-500 hover:underline"
-                            >
+                            <a :href="movie.providers.link" target="_blank">
                               <img
                                 :src="
                                   'https://image.tmdb.org/t/p/w500' + provider.logo_path
@@ -455,7 +457,7 @@
                           (!movie.providers?.rent || movie.providers.rent.length === 0) &&
                           (!movie.providers?.buy || movie.providers.buy.length === 0)
                         "
-                        class="italic mt-2"
+                        class="italic mt-2 text-red-500"
                       >
                         No providers found...
                       </p>
@@ -574,13 +576,26 @@
                   </div>
                   <div v-if="movie.expanded" class="p-4 border-t">
                     <p
-                      class="text-gray-700 text-base"
-                      v-html="
-                        movie.overview
-                          ? movie.overview
-                          : '<i>No overview available...</i>'
-                      "
+                      class="text-base"
+                      v-if="movie.overview"
+                      v-html="movie.overview"
                     ></p>
+                    <p class="text-red-500 text-base" v-else>
+                      <i>No overview available...</i>
+                    </p>
+                    <div v-if="movie.trailers && movie.trailers.length > 0" class="mt-4">
+                      <h4 class="mt-2 font-bold text-gray-700">Trailer:</h4>
+                      <div class="relative" style="padding-bottom: 56.25%">
+                        <iframe
+                          class="absolute top-0 left-0 w-full h-full"
+                          :src="'https://www.youtube.com/embed/' + movie.trailers[0].key"
+                          frameborder="0"
+                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                          allowfullscreen
+                        ></iframe>
+                      </div>
+                    </div>
+                    <p v-else class="mt-4 italic text-red-500">No trailer available...</p>
                     <div class="mt-4">
                       <div
                         v-if="
@@ -594,11 +609,7 @@
                             :key="'flatrate-' + provider.provider_id"
                             class="mr-2 mb-1"
                           >
-                            <a
-                              :href="movie.providers.link"
-                              target="_blank"
-                              class="text-blue-500 hover:underline"
-                            >
+                            <a :href="movie.providers.link" target="_blank">
                               <img
                                 :src="
                                   'https://image.tmdb.org/t/p/w500' + provider.logo_path
@@ -620,11 +631,7 @@
                             :key="'rent-' + provider.provider_id"
                             class="mr-2 mb-1"
                           >
-                            <a
-                              :href="movie.providers.link"
-                              target="_blank"
-                              class="text-blue-500 hover:underline"
-                            >
+                            <a :href="movie.providers.link" target="_blank">
                               <img
                                 :src="
                                   'https://image.tmdb.org/t/p/w500' + provider.logo_path
@@ -644,11 +651,7 @@
                             :key="'buy-' + provider.provider_id"
                             class="mr-2 mb-1"
                           >
-                            <a
-                              :href="movie.providers.link"
-                              target="_blank"
-                              class="text-blue-500 hover:underline"
-                            >
+                            <a :href="movie.providers.link" target="_blank">
                               <img
                                 :src="
                                   'https://image.tmdb.org/t/p/w500' + provider.logo_path
@@ -667,7 +670,7 @@
                           (!movie.providers?.rent || movie.providers.rent.length === 0) &&
                           (!movie.providers?.buy || movie.providers.buy.length === 0)
                         "
-                        class="italic mt-2"
+                        class="italic mt-2 text-red-500"
                       >
                         No providers found...
                       </p>
@@ -1073,12 +1076,18 @@ const fetchTopMovie = async (keywordId) => {
     const providersResponse = await fetch(providersUrl, options);
     const providersJson = await providersResponse.json();
 
+    const trailersUrl = `https://api.themoviedb.org/3/movie/${movie.id}/videos`;
+    const trailersResponse = await fetch(trailersUrl, options);
+    const trailersJson = await trailersResponse.json();
+    const trailers = trailersJson.results.filter((video) => video.type === "Trailer");
+
     return {
       ...movie,
       genres: movie.genre_ids.map(
         (id) => genres.value.find((genre) => genre.id === id)?.name || "Unknown"
       ),
       providers: providersJson.results.US, // Change 'US' to your desired country code
+      trailers: trailers,
     };
   });
 
