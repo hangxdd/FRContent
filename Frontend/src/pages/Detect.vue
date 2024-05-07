@@ -307,6 +307,86 @@
                         </p>
                       </div>
                     </div>
+                    <div class="mt-4">
+                      <button
+                        @click="movie.showActors = !movie.showActors"
+                        class="mt-2 p-2 font-bold text-center text-white bg-blue-600 hover:bg-blue-500 rounded w-full flex items-center justify-between"
+                      >
+                        <div class="flex items-center justify-center space-x-2 flex-grow">
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke-width="1.5"
+                            stroke="currentColor"
+                            class="w-6 h-6 ml-6 mr-2"
+                          >
+                            <path
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                              d="M15 19.128a9.38 9.38 0 0 0 2.625.372 9.337 9.337 0 0 0 4.121-.952 4.125 4.125 0 0 0-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 0 1 8.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0 1 11.964-3.07M12 6.375a3.375 3.375 0 1 1-6.75 0 3.375 3.375 0 0 1 6.75 0Zm8.25 2.25a2.625 2.625 0 1 1-5.25 0 2.625 2.625 0 0 1 5.25 0Z"
+                            />
+                          </svg>
+                          Actors
+                        </div>
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                          class="h-6 w-6 mr-2 transform transition-transform duration-200 text-primary-500"
+                          :class="{ 'rotate-180': movie.showActors }"
+                        >
+                          <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M19 9l-7 7-7-7"
+                          ></path>
+                        </svg>
+                      </button>
+                      <div v-show="movie.showActors" class="dropdown">
+                        <div v-if="movie.actors && movie.actors.length > 0">
+                          <div class="relative w-full">
+                            <div class="flex overflow-x-auto space-x-8 mt-4 p-2">
+                              <div
+                                v-for="actor in movie.actors"
+                                :key="'actor-' + actor.id"
+                                class="flex flex-col items-center shadow-md rounded-md bg-white"
+                              >
+                                <a :href="actor.link" target="_blank">
+                                  <div class="w-32 h-40 overflow-hidden rounded-md">
+                                    <img
+                                      :src="
+                                        'https://image.tmdb.org/t/p/w500' +
+                                        actor.profile_path
+                                      "
+                                      alt=""
+                                      class="w-full h-full object-cover object-center"
+                                    />
+                                  </div>
+                                  <div class="text-md font-bold p-4">
+                                    {{ actor.name }}
+                                  </div>
+                                  <div class="text-md p-4 -mt-8">
+                                    {{ actor.character }}
+                                  </div>
+                                </a>
+                              </div>
+                            </div>
+                            <div
+                              class="absolute rounded top-0 right-0 bottom-0 w-20 bg-gradient-to-r from-transparent to-white"
+                            ></div>
+                          </div>
+                        </div>
+                        <p
+                          v-if="!movie.actors || movie.actors.length === 0"
+                          class="italic mt-2 text-red-500"
+                        >
+                          No actors data available...
+                        </p>
+                      </div>
+                    </div>
                     <button
                       class="w-full text-white font-bold p-2 mt-4 rounded flex justify-center items-center"
                       :class="
@@ -576,6 +656,86 @@
                           class="italic mt-2 text-red-500"
                         >
                           No providers available...
+                        </p>
+                      </div>
+                    </div>
+                    <div class="mt-4">
+                      <button
+                        @click="movie.showActors = !movie.showActors"
+                        class="mt-2 p-2 font-bold text-center text-white bg-blue-600 hover:bg-blue-500 rounded w-full flex items-center justify-between"
+                      >
+                        <div class="flex items-center justify-center space-x-2 flex-grow">
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke-width="1.5"
+                            stroke="currentColor"
+                            class="w-6 h-6 ml-6 mr-2"
+                          >
+                            <path
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                              d="M15 19.128a9.38 9.38 0 0 0 2.625.372 9.337 9.337 0 0 0 4.121-.952 4.125 4.125 0 0 0-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 0 1 8.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0 1 11.964-3.07M12 6.375a3.375 3.375 0 1 1-6.75 0 3.375 3.375 0 0 1 6.75 0Zm8.25 2.25a2.625 2.625 0 1 1-5.25 0 2.625 2.625 0 0 1 5.25 0Z"
+                            />
+                          </svg>
+                          Actors
+                        </div>
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                          class="h-6 w-6 mr-2 transform transition-transform duration-200 text-primary-500"
+                          :class="{ 'rotate-180': movie.showActors }"
+                        >
+                          <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M19 9l-7 7-7-7"
+                          ></path>
+                        </svg>
+                      </button>
+                      <div v-show="movie.showActors" class="dropdown">
+                        <div v-if="movie.actors && movie.actors.length > 0">
+                          <div class="relative w-full">
+                            <div class="flex overflow-x-auto space-x-8 mt-4 p-2">
+                              <div
+                                v-for="actor in movie.actors"
+                                :key="'actor-' + actor.id"
+                                class="flex flex-col items-center shadow-md rounded-md bg-white"
+                              >
+                                <a :href="actor.link" target="_blank">
+                                  <div class="w-32 h-40 overflow-hidden rounded-md">
+                                    <img
+                                      :src="
+                                        'https://image.tmdb.org/t/p/w500' +
+                                        actor.profile_path
+                                      "
+                                      alt=""
+                                      class="w-full h-full object-cover object-center"
+                                    />
+                                  </div>
+                                  <div class="text-md font-bold p-4">
+                                    {{ actor.name }}
+                                  </div>
+                                  <div class="text-md p-4 -mt-8">
+                                    {{ actor.character }}
+                                  </div>
+                                </a>
+                              </div>
+                            </div>
+                            <div
+                              class="absolute rounded top-0 right-0 bottom-0 w-20 bg-gradient-to-r from-transparent to-white"
+                            ></div>
+                          </div>
+                        </div>
+                        <p
+                          v-if="!movie.actors || movie.actors.length === 0"
+                          class="italic mt-2 text-red-500"
+                        >
+                          No actors data available...
                         </p>
                       </div>
                     </div>
@@ -849,6 +1009,86 @@
                         </p>
                       </div>
                     </div>
+                    <div class="mt-4">
+                      <button
+                        @click="movie.showActors = !movie.showActors"
+                        class="mt-2 p-2 font-bold text-center text-white bg-blue-600 hover:bg-blue-500 rounded w-full flex items-center justify-between"
+                      >
+                        <div class="flex items-center justify-center space-x-2 flex-grow">
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke-width="1.5"
+                            stroke="currentColor"
+                            class="w-6 h-6 ml-6 mr-2"
+                          >
+                            <path
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                              d="M15 19.128a9.38 9.38 0 0 0 2.625.372 9.337 9.337 0 0 0 4.121-.952 4.125 4.125 0 0 0-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 0 1 8.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0 1 11.964-3.07M12 6.375a3.375 3.375 0 1 1-6.75 0 3.375 3.375 0 0 1 6.75 0Zm8.25 2.25a2.625 2.625 0 1 1-5.25 0 2.625 2.625 0 0 1 5.25 0Z"
+                            />
+                          </svg>
+                          Actors
+                        </div>
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                          class="h-6 w-6 mr-2 transform transition-transform duration-200 text-primary-500"
+                          :class="{ 'rotate-180': movie.showActors }"
+                        >
+                          <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M19 9l-7 7-7-7"
+                          ></path>
+                        </svg>
+                      </button>
+                      <div v-show="movie.showActors" class="dropdown">
+                        <div v-if="movie.actors && movie.actors.length > 0">
+                          <div class="relative w-full">
+                            <div class="flex overflow-x-auto space-x-8 mt-4 p-2">
+                              <div
+                                v-for="actor in movie.actors"
+                                :key="'actor-' + actor.id"
+                                class="flex flex-col items-center shadow-md rounded-md bg-white"
+                              >
+                                <a :href="actor.link" target="_blank">
+                                  <div class="w-32 h-40 overflow-hidden rounded-md">
+                                    <img
+                                      :src="
+                                        'https://image.tmdb.org/t/p/w500' +
+                                        actor.profile_path
+                                      "
+                                      alt=""
+                                      class="w-full h-full object-cover object-center"
+                                    />
+                                  </div>
+                                  <div class="text-md font-bold p-4">
+                                    {{ actor.name }}
+                                  </div>
+                                  <div class="text-md p-4 -mt-8">
+                                    {{ actor.character }}
+                                  </div>
+                                </a>
+                              </div>
+                            </div>
+                            <div
+                              class="absolute rounded top-0 right-0 bottom-0 w-20 bg-gradient-to-r from-transparent to-white"
+                            ></div>
+                          </div>
+                        </div>
+                        <p
+                          v-if="!movie.actors || movie.actors.length === 0"
+                          class="italic mt-2 text-red-500"
+                        >
+                          No actors data available...
+                        </p>
+                      </div>
+                    </div>
                     <button
                       class="w-full text-white font-bold p-2 mt-4 rounded flex justify-center items-center"
                       :class="
@@ -974,6 +1214,7 @@ const fetchUserHistoryMovies = async () => {
 const fetchMovieData = async (movieId) => {
   const url = `https://api.themoviedb.org/3/movie/${movieId}`;
   const providersUrl = `https://api.themoviedb.org/3/movie/${movieId}/watch/providers`;
+  const actorsUrl = `https://api.themoviedb.org/3/movie/${movieId}/credits`;
   const options = {
     method: "GET",
     headers: {
@@ -983,14 +1224,16 @@ const fetchMovieData = async (movieId) => {
     },
   };
 
-  const [movieResponse, providersResponse, trailers] = await Promise.all([
+  const [movieResponse, providersResponse, trailers, actorsResponse] = await Promise.all([
     fetch(url, options),
     fetch(providersUrl, options),
     fetchMovieTrailers(movieId, options),
+    fetch(actorsUrl, options),
   ]);
 
   const movie = await movieResponse.json();
   const providers = await providersResponse.json();
+  const actors = await actorsResponse.json();
 
   return {
     ...movie,
@@ -998,6 +1241,7 @@ const fetchMovieData = async (movieId) => {
     providers: providers.results.US, // assuming you want providers for the US
     trailers: trailers,
     showProviders: false,
+    actors: actors.cast, // assuming you want the cast of the movie
   };
 };
 
@@ -1280,6 +1524,7 @@ const fetchTopMovie = async (keywordId) => {
       ),
       providers: movieData.providers,
       trailers: movieData.trailers,
+      actors: movieData.actors, // added actors property
     };
   });
 
