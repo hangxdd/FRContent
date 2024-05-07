@@ -142,22 +142,28 @@
       </div>
     </div>
 
-    <DisclosurePanel class="sm:hidden">
-      <div class="space-y-1 px-2 pb-3 pt-2">
-        <DisclosureButton
-          v-for="item in navigation"
-          :key="item.name"
-          as="router-link"
-          :to="item.href"
-          :class="[
-            item.current
-              ? 'bg-blue-600 text-white shadow-md'
-              : 'text-gray-400 hover:bg-gray-400 hover:text-white',
-            'block rounded-md px-3 py-2 text-base font-medium cursor-pointer',
-          ]"
-          :aria-current="item.current ? 'page' : undefined"
-          >{{ item.name }}</DisclosureButton
-        >
+    <DisclosurePanel
+      class="absolute top-16 inset-x-0 p-2 transition transform origin-top-right md:hidden"
+    >
+      <div
+        class="rounded-lg shadow-md bg-white ring-1 ring-black ring-opacity-5 overflow-hidden"
+      >
+        <div class="px-5 pt-4 flex items-center justify-between">
+          <div>
+            <!-- Your logo here -->
+          </div>
+        </div>
+        <div class="px-2 pt-2 pb-3 space-y-1">
+          <router-link
+            v-for="item in navigation"
+            :key="item.name"
+            :to="item.href"
+            :aria-current="item.current ? 'page' : undefined"
+            class="block rounded-md px-3 py-2 text-base font-medium text-gray-500 hover:text-gray-900 hover:bg-gray-50"
+          >
+            {{ item.name }}
+          </router-link>
+        </div>
       </div>
     </DisclosurePanel>
   </Disclosure>
