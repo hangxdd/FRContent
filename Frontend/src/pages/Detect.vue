@@ -1,5 +1,5 @@
 <template>
-  <div class="w-full max-w-md px-2 py-16 sm:px-0">
+  <div class="w-full max-w-lg m-10 sm:px-0">
     <TabGroup>
       <TabList class="flex flex-col md:flex-row rounded-xl bg-blue-900/20 p-1">
         <Tab
@@ -311,8 +311,8 @@
                       class="w-full text-white font-bold p-2 mt-4 rounded flex justify-center items-center"
                       :class="
                         isFavourited[movie.id]
-                          ? 'bg-blue-600 hover:bg-blue-500'
-                          : 'bg-blue-300 hover:bg-blue-200'
+                          ? 'bg-yellow-500 hover:bg-yellow-400'
+                          : 'bg-yellow-300 hover:bg-yellow-200'
                       "
                       @click="toggleFavouriteMovie(movie.id)"
                     >
@@ -583,8 +583,8 @@
                       class="w-full text-white font-bold p-2 mt-4 rounded flex justify-center items-center"
                       :class="
                         isFavourited[movie.id]
-                          ? 'bg-blue-600 hover:bg-blue-500'
-                          : 'bg-blue-300 hover:bg-blue-200'
+                          ? 'bg-yellow-500 hover:bg-yellow-400'
+                          : 'bg-yellow-300 hover:bg-yellow-200'
                       "
                       @click="toggleFavouriteMovie(movie.id)"
                     >
@@ -853,8 +853,8 @@
                       class="w-full text-white font-bold p-2 mt-4 rounded flex justify-center items-center"
                       :class="
                         isFavourited[movie.id]
-                          ? 'bg-blue-600 hover:bg-blue-500'
-                          : 'bg-blue-300 hover:bg-blue-200'
+                          ? 'bg-yellow-500 hover:bg-yellow-400'
+                          : 'bg-yellow-300 hover:bg-yellow-200'
                       "
                       @click="toggleFavouriteMovie(movie.id)"
                     >
