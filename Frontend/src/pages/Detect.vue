@@ -1,7 +1,7 @@
 <template>
   <div class="w-full max-w-md px-2 py-16 sm:px-0">
     <TabGroup>
-      <TabList class="flex space-x-1 rounded-xl bg-blue-900/20 p-1">
+      <TabList class="flex flex-col md:flex-row rounded-xl bg-blue-900/20 p-1">
         <Tab
           v-for="category in Object.keys(categories)"
           as="template"
