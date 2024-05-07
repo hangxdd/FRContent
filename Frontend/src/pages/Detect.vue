@@ -119,7 +119,7 @@
                       <img
                         :src="'https://image.tmdb.org/t/p/w500' + movie.poster_path"
                         alt="Movie poster"
-                        class="w-16 h-16 object-cover mr-4 rounded"
+                        class="w-24 object-cover mr-4 rounded"
                       />
                       <div>
                         <h2 class="font-bold text-xl mb-2 text-primary-500">
@@ -132,7 +132,8 @@
                           <strong>Release date:</strong> {{ movie.release_date }}
                         </p>
                         <p class="text-gray-700">
-                          <strong>Average vote:</strong> {{ movie.vote_average }}
+                          <strong>Average vote:</strong>
+                          {{ parseFloat(movie.vote_average).toFixed(1) }}
                         </p>
                       </div>
                     </div>
@@ -390,7 +391,7 @@
                       <img
                         :src="'https://image.tmdb.org/t/p/w500' + movie.poster_path"
                         alt="Movie poster"
-                        class="w-16 h-16 object-cover mr-4 rounded"
+                        class="w-24 object-cover mr-4 rounded"
                       />
                       <div>
                         <h2 class="font-bold text-xl mb-2 text-primary-500">
@@ -403,7 +404,8 @@
                           <strong>Release date:</strong> {{ movie.release_date }}
                         </p>
                         <p class="text-gray-700">
-                          <strong>Average vote:</strong> {{ movie.vote_average }}
+                          <strong>Average vote:</strong>
+                          {{ parseFloat(movie.vote_average).toFixed(1) }}
                         </p>
                       </div>
                     </div>
@@ -659,7 +661,7 @@
                       <img
                         :src="'https://image.tmdb.org/t/p/w500' + movie.poster_path"
                         alt="Movie poster"
-                        class="w-16 h-16 object-cover mr-4 rounded"
+                        class="w-24 object-cover mr-4 rounded"
                       />
                       <div>
                         <h2 class="font-bold text-xl mb-2 text-primary-500">
@@ -672,7 +674,8 @@
                           <strong>Release date:</strong> {{ movie.release_date }}
                         </p>
                         <p class="text-gray-700">
-                          <strong>Average vote:</strong> {{ movie.vote_average }}
+                          <strong>Average vote:</strong>
+                          {{ parseFloat(movie.vote_average).toFixed(1) }}
                         </p>
                       </div>
                     </div>
@@ -899,7 +902,6 @@ const isGenerating = ref(false);
 const genres = ref([]);
 const histMovieCount = computed(() => categories.value.History.length);
 const favMovieCount = computed(() => categories.value.Favourites.length);
-const showProviders = ref(false);
 
 const activeTab = ref("Detect");
 
