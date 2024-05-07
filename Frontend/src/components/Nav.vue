@@ -43,8 +43,20 @@
             class="relative rounded-full shadow-md bg-blue-700 hover:bg-blue-600 p-1 border-2 border-gray-200 hover:border-white text-gray-300 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-white"
           >
             <span class="absolute -inset-1.5" />
-            <span class="sr-only">View notifications</span>
-            <BellIcon class="h-6 w-6" aria-hidden="true" />
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor"
+              class="w-6 h-6"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M12 18v-5.25m0 0a6.01 6.01 0 0 0 1.5-.189m-1.5.189a6.01 6.01 0 0 1-1.5-.189m3.75 7.478a12.06 12.06 0 0 1-4.5 0m3.75 2.383a14.406 14.406 0 0 1-3 0M14.25 18v-.192c0-.983.658-1.823 1.508-2.316a7.5 7.5 0 1 0-7.517 0c.85.493 1.509 1.333 1.509 2.316V18"
+              />
+            </svg>
           </button>
 
           <!-- Profile dropdown -->
@@ -92,18 +104,6 @@
               <MenuItems
                 class="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
               >
-                <MenuItem class="w-full">
-                  <div class="flex flex-col mt-2">
-                    <span class="ml-4 text-sm font-bold">
-                      {{ useAuth.user.name }}
-                    </span>
-                    <!-- Container for the Separator Line -->
-                    <div class="w-full mx-2">
-                      <!-- Adjusted Separator Line with Custom Margins -->
-                      <div class="border-b-2 border-gray-700 my-2 w-3/4 ml-2"></div>
-                    </div>
-                  </div>
-                </MenuItem>
                 <MenuItem v-slot="{ active }">
                   <router-link
                     to="/profile"
