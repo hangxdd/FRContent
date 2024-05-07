@@ -891,6 +891,7 @@ import { onBeforeUnmount, onMounted, ref, watchEffect, computed, reactive } from
 import { authStore } from "../stores/authstore";
 import { TabGroup, TabList, Tab, TabPanels, TabPanel } from "@headlessui/vue";
 import axios from "axios";
+import { useToast } from "vue-toastification";
 
 const useAuth = authStore();
 const isPlaying = ref(false);
@@ -902,6 +903,7 @@ const isGenerating = ref(false);
 const genres = ref([]);
 const histMovieCount = computed(() => categories.value.History.length);
 const favMovieCount = computed(() => categories.value.Favourites.length);
+const toast = useToast();
 
 const activeTab = ref("Detect");
 
@@ -962,8 +964,10 @@ const fetchUserHistoryMovies = async () => {
     const movies = await Promise.all(moviePromises);
 
     categories.value.History = movies;
+    toast.success("User's history movies fetched successfully");
   } catch (error) {
     console.error("Error fetching user history movies:", error);
+    toast.error("Error fetching user history movies");
   }
 };
 
@@ -1002,8 +1006,10 @@ const deleteAllHistoryMovies = async () => {
     const userId = useAuth.user.id;
     await axios.delete(`/api/users/${userId}/history`);
     categories.value.History = [];
+    toast.success("User history movies deleted successfully");
   } catch (error) {
     console.error("Error deleting user history movies:", error);
+    toast.error("Error deleting user history movies");
   }
 };
 
@@ -1014,8 +1020,10 @@ const deleteHistoryMovie = async (movieId) => {
     categories.value.History = categories.value.History.filter(
       (movie) => movie.id !== movieId
     );
+    toast.success(`Movie with id ${movieId} deleted from user history successfully`);
   } catch (error) {
     console.error(`Error deleting movie with id ${movieId} from user history:`, error);
+    toast.error(`Error deleting movie with id ${movieId} from user history`);
   }
 };
 
@@ -1025,6 +1033,7 @@ const toggleFavouriteMovie = async (movieId) => {
     if (isFavourited[movieId]) {
       await axios.delete(`/api/favourite_movies/${userId}/${movieId}`);
       isFavourited[movieId] = false;
+      toast.success(`Movie with id ${movieId} removed from favourites successfully`);
     } else {
       // Check if the movie is already favorited by the user
       const response = await axios.get(`/api/is_movie_favourited/${userId}/${movieId}`);
@@ -1033,13 +1042,16 @@ const toggleFavouriteMovie = async (movieId) => {
       if (!isAlreadyFavourited) {
         await axios.post("/api/favourite_movies", { user_id: userId, movie_id: movieId });
         isFavourited[movieId] = true;
+        toast.success(`Movie with id ${movieId} added to favourites successfully`);
       } else {
         await axios.delete(`/api/favourite_movies/${userId}/${movieId}`);
         isFavourited[movieId] = false;
+        toast.success(`Movie with id ${movieId} removed from favourites successfully`);
       }
     }
   } catch (error) {
     console.error(`Error toggling favourite status for movie with id ${movieId}:`, error);
+    toast.error(`Error toggling favourite status for movie with id ${movieId}`);
   }
 };
 
@@ -1057,8 +1069,10 @@ const fetchFavouriteMovies = async () => {
     const movies = await Promise.all(moviePromises);
 
     categories.value.Favourites = movies;
+    toast.success("User's favourite movies fetched successfully");
   } catch (error) {
     console.error("Error fetching favourite movies:", error);
+    toast.error("Error fetching favourite movies");
   }
 };
 
@@ -1200,11 +1214,17 @@ const captureEmotion = async () => {
 
       // Sort the movies by vote average and take the top 3
       movies.sort((a, b) => b.vote_average - a.vote_average);
-      recommendedMovies.value = movies
+
+      // Use a Set to ensure uniqueness of movies
+      const uniqueMovies = Array.from(
+        new Set(movies.map((movie) => movie.id))
+      ).map((id) => movies.find((movie) => movie.id === id));
+
+      recommendedMovies.value = uniqueMovies
         .slice(0, 3)
         .map((movie) => ({ ...movie, expanded: false }));
 
-      console.log(movies);
+      console.log(uniqueMovies);
 
       // Find the index of the "Recommendations" tab
       const index = Object.keys(categories.value).indexOf("Recommendations");
@@ -1216,21 +1236,22 @@ const captureEmotion = async () => {
     const userId = useAuth.user.id;
     const movieIds = recommendedMovies.value.map((movie) => movie.id);
 
-    movieIds.forEach((movieId) => {
-      axios
+    const historyMoviesPromises = movieIds.map((movieId) => {
+      return axios
         .post("/api/history_movies", {
           user_id: userId,
           movie_id: movieId,
-        })
-        .then((response) => {
-          console.log(response.data);
         })
         .catch((error) => {
           console.error(error);
         });
     });
+
+    await Promise.all(historyMoviesPromises);
+    toast.success(`Generated recommended movies successfully`);
   } catch (error) {
     console.error("Error fetching data:", error);
+    toast.error("Error fetching data");
   } finally {
     isGenerating.value = false;
   }
@@ -1279,6 +1300,7 @@ const toggleVideo = async () => {
     const tracks = videoElement.srcObject.getTracks();
     tracks.forEach((track) => track.stop());
     isPlaying.value = false;
+    toast.error("Video stopped");
   } else {
     try {
       const constraints = { video: true };
@@ -1291,8 +1313,10 @@ const toggleVideo = async () => {
         detectEmotions();
       };
       isPlaying.value = true;
+      toast.success("Video started");
     } catch (err) {
       console.error("Error: " + err);
+      toast.error("Error starting video: " + err);
     }
   }
 };

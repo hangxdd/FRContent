@@ -177,12 +177,15 @@ import {
 import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/vue/24/outline";
 import { authStore } from "../stores/authstore";
 import { useRouter, useRoute } from "vue-router";
+import { useToast } from "vue-toastification";
 
 const useAuth = authStore();
 const router = useRouter();
 const route = useRoute();
+const toast = useToast();
 
 const logOutAndRedirect = () => {
+  toast("You have been logged out");
   useAuth.logOut();
   router.push("/login");
 };
