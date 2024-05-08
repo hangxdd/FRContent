@@ -479,7 +479,7 @@
                           viewBox="0 0 24 24"
                           stroke-width="1.5"
                           stroke="currentColor"
-                          class="w-8 h-8 ml-4 mr-2"
+                          class="w-8 h-8 ml-6 mr-2"
                         >
                           <path
                             stroke-linecap="round"
@@ -987,7 +987,7 @@
                             viewBox="0 0 24 24"
                             stroke-width="1.5"
                             stroke="currentColor"
-                            class="w-8 h-8 ml-4 mr-2"
+                            class="w-8 h-8 ml-6 mr-2"
                           >
                             <path
                               stroke-linecap="round"
@@ -1466,23 +1466,29 @@ import { ChevronDownIcon } from "@heroicons/vue/20/solid";
 import axios from "axios";
 import { useToast } from "vue-toastification";
 
-const useAuth = authStore();
+// Refs
 const isPlaying = ref(false);
 const lastEmotion = ref(null);
 const recommendedEmotion = ref(null);
 const recommendedMovies = ref([]);
-let isFavourited = reactive({});
 const isGenerating = ref(false);
 const genres = ref([]);
-const histMovieCount = computed(() => categories.value.History.length);
-const favMovieCount = computed(() => categories.value.Favourites.length);
-const toast = useToast();
 const isOpen = ref(false);
-
 const activeTab = ref("Detect");
-
 const tabs = ref(null);
 
+// Reactive
+let isFavourited = reactive({});
+
+// Computed
+const histMovieCount = computed(() => categories.value.History.length);
+const favMovieCount = computed(() => categories.value.Favourites.length);
+
+// Stores and other services
+const useAuth = authStore();
+const toast = useToast();
+
+// Categories
 const categories = ref({
   Detect: [],
   Recommendations: [],
