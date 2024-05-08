@@ -115,7 +115,7 @@
                     @click="movie.expanded = !movie.expanded"
                     class="cursor-pointer flex justify-between items-center p-4"
                   >
-                    <div class="flex items-center">
+                    <div class="flex flex-col md:flex-row items-center">
                       <img
                         :src="'https://image.tmdb.org/t/p/w500' + movie.poster_path"
                         alt="Movie poster"
@@ -195,7 +195,7 @@
                             viewBox="0 0 24 24"
                             stroke-width="1.5"
                             stroke="currentColor"
-                            class="w-6 h-6 ml-8 mr-2"
+                            class="w-6 h-6 ml-2 md:ml-8 mr-2"
                           >
                             <path
                               stroke-linecap="round"
@@ -212,7 +212,7 @@
                           fill="none"
                           viewBox="0 0 24 24"
                           stroke="currentColor"
-                          class="h-6 w-6 mr-2 transform transition-transform duration-200 text-primary-500"
+                          class="h-6 w-6 mr-2 transform transition-transform duration-200 text-primary-500 hidden md:block"
                           :class="{ 'rotate-180': movie.showProviders }"
                         >
                           <path
@@ -319,7 +319,7 @@
                             viewBox="0 0 24 24"
                             stroke-width="1.5"
                             stroke="currentColor"
-                            class="w-6 h-6 ml-6 mr-2"
+                            class="w-6 h-6 ml-2 md:ml-8 mr-2"
                           >
                             <path
                               stroke-linecap="round"
@@ -334,7 +334,7 @@
                           fill="none"
                           viewBox="0 0 24 24"
                           stroke="currentColor"
-                          class="h-6 w-6 mr-2 transform transition-transform duration-200 text-primary-500"
+                          class="h-6 w-6 mr-2 transform transition-transform duration-200 text-primary-500 hidden md:block"
                           :class="{ 'rotate-180': movie.showActors }"
                         >
                           <path
@@ -624,7 +624,7 @@
                     @click="movie.expanded = !movie.expanded"
                     class="cursor-pointer flex justify-between items-center p-4"
                   >
-                    <div class="flex items-center">
+                    <div class="flex flex-col md:flex-row items-center">
                       <img
                         :src="'https://image.tmdb.org/t/p/w500' + movie.poster_path"
                         alt="Movie poster"
@@ -704,7 +704,7 @@
                             viewBox="0 0 24 24"
                             stroke-width="1.5"
                             stroke="currentColor"
-                            class="w-6 h-6 ml-8 mr-2"
+                            class="w-6 h-6 ml-4 md:ml-8 mr-2"
                           >
                             <path
                               stroke-linecap="round"
@@ -721,7 +721,7 @@
                           fill="none"
                           viewBox="0 0 24 24"
                           stroke="currentColor"
-                          class="h-6 w-6 mr-2 transform transition-transform duration-200 text-primary-500"
+                          class="h-6 w-6 mr-2 transform transition-transform duration-200 text-primary-500 hidden md:block"
                           :class="{ 'rotate-180': movie.showProviders }"
                         >
                           <path
@@ -828,7 +828,7 @@
                             viewBox="0 0 24 24"
                             stroke-width="1.5"
                             stroke="currentColor"
-                            class="w-6 h-6 ml-6 mr-2"
+                            class="w-6 h-6 ml-2 md:ml-8 mr-2"
                           >
                             <path
                               stroke-linecap="round"
@@ -843,7 +843,7 @@
                           fill="none"
                           viewBox="0 0 24 24"
                           stroke="currentColor"
-                          class="h-6 w-6 mr-2 transform transition-transform duration-200 text-primary-500"
+                          class="h-6 w-6 mr-2 transform transition-transform duration-200 text-primary-500 hidden md:block"
                           :class="{ 'rotate-180': movie.showActors }"
                         >
                           <path
@@ -861,7 +861,7 @@
                               <div
                                 v-for="actor in movie.actors"
                                 :key="'actor-' + actor.id"
-                                class="flex flex-col w-1/3 items-center shadow-md rounded-md bg-white"
+                                class="flex flex-col items-center shadow-md rounded-md bg-white"
                               >
                                 <a :href="actor.link" target="_blank">
                                   <div class="flex w-32 h-40 overflow-hidden rounded-md">
@@ -1131,7 +1131,7 @@
                     @click="movie.expanded = !movie.expanded"
                     class="cursor-pointer flex justify-between items-center p-4"
                   >
-                    <div class="flex items-center">
+                    <div class="flex flex-col md:flex-row items-center">
                       <img
                         :src="'https://image.tmdb.org/t/p/w500' + movie.poster_path"
                         alt="Movie poster"
@@ -1211,7 +1211,7 @@
                             viewBox="0 0 24 24"
                             stroke-width="1.5"
                             stroke="currentColor"
-                            class="w-6 h-6 ml-8 mr-2"
+                            class="w-6 h-6 ml-4 md:ml-8 mr-2"
                           >
                             <path
                               stroke-linecap="round"
@@ -1228,7 +1228,7 @@
                           fill="none"
                           viewBox="0 0 24 24"
                           stroke="currentColor"
-                          class="h-6 w-6 mr-2 transform transition-transform duration-200 text-primary-500"
+                          class="h-6 w-6 mr-2 transform transition-transform duration-200 text-primary-500 hidden md:block"
                           :class="{ 'rotate-180': movie.showProviders }"
                         >
                           <path
@@ -1335,7 +1335,7 @@
                             viewBox="0 0 24 24"
                             stroke-width="1.5"
                             stroke="currentColor"
-                            class="w-6 h-6 ml-6 mr-2"
+                            class="w-6 h-6 md:ml-6 mr-2"
                           >
                             <path
                               stroke-linecap="round"
@@ -1350,7 +1350,7 @@
                           fill="none"
                           viewBox="0 0 24 24"
                           stroke="currentColor"
-                          class="h-6 w-6 mr-2 transform transition-transform duration-200 text-primary-500"
+                          class="h-6 w-6 mr-2 transform transition-transform duration-200 text-primary-500 hidden md:block"
                           :class="{ 'rotate-180': movie.showActors }"
                         >
                           <path
