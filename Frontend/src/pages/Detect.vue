@@ -355,8 +355,9 @@
                                 class="flex flex-col items-center shadow-md rounded-md bg-white"
                               >
                                 <a :href="actor.link" target="_blank">
-                                  <div class="w-32 h-40 overflow-hidden rounded-md">
+                                  <div class="flex w-32 h-40 overflow-hidden rounded-md">
                                     <img
+                                      v-if="actor.profile_path"
                                       :src="
                                         'https://image.tmdb.org/t/p/w500' +
                                         actor.profile_path
@@ -364,6 +365,12 @@
                                       alt=""
                                       class="w-full h-full object-cover object-center"
                                     />
+                                    <div
+                                      v-else
+                                      class="flex items-center justify-center text-red-500 text-center text-md font-bold"
+                                    >
+                                      Image Not Available
+                                    </div>
                                   </div>
                                   <div class="text-md font-bold p-4">
                                     {{ actor.name }}
@@ -704,11 +711,12 @@
                               <div
                                 v-for="actor in movie.actors"
                                 :key="'actor-' + actor.id"
-                                class="flex flex-col items-center shadow-md rounded-md bg-white"
+                                class="flex flex-col w-1/3 items-center shadow-md rounded-md bg-white"
                               >
                                 <a :href="actor.link" target="_blank">
-                                  <div class="w-32 h-40 overflow-hidden rounded-md">
+                                  <div class="flex w-32 h-40 overflow-hidden rounded-md">
                                     <img
+                                      v-if="actor.profile_path"
                                       :src="
                                         'https://image.tmdb.org/t/p/w500' +
                                         actor.profile_path
@@ -716,6 +724,12 @@
                                       alt=""
                                       class="w-full h-full object-cover object-center"
                                     />
+                                    <div
+                                      v-else
+                                      class="flex items-center justify-center text-red-500 text-center text-md font-bold"
+                                    >
+                                      Image Not Available
+                                    </div>
                                   </div>
                                   <div class="text-md font-bold p-4">
                                     {{ actor.name }}
@@ -1057,8 +1071,9 @@
                                 class="flex flex-col items-center shadow-md rounded-md bg-white"
                               >
                                 <a :href="actor.link" target="_blank">
-                                  <div class="w-32 h-40 overflow-hidden rounded-md">
+                                  <div class="flex w-32 h-40 overflow-hidden rounded-md">
                                     <img
+                                      v-if="actor.profile_path"
                                       :src="
                                         'https://image.tmdb.org/t/p/w500' +
                                         actor.profile_path
@@ -1066,6 +1081,12 @@
                                       alt=""
                                       class="w-full h-full object-cover object-center"
                                     />
+                                    <div
+                                      v-else
+                                      class="flex items-center justify-center text-red-500 text-center text-md font-bold"
+                                    >
+                                      Image Not Available
+                                    </div>
                                   </div>
                                   <div class="text-md font-bold p-4">
                                     {{ actor.name }}
