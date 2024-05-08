@@ -383,6 +383,7 @@
                             </div>
                             <div
                               class="absolute rounded top-0 right-0 bottom-0 w-20 bg-gradient-to-r from-transparent to-white"
+                              style="pointer-events: none"
                             ></div>
                           </div>
                         </div>
@@ -742,6 +743,7 @@
                             </div>
                             <div
                               class="absolute rounded top-0 right-0 bottom-0 w-20 bg-gradient-to-r from-transparent to-white"
+                              style="pointer-events: none"
                             ></div>
                           </div>
                         </div>
@@ -1099,6 +1101,7 @@
                             </div>
                             <div
                               class="absolute rounded top-0 right-0 bottom-0 w-20 bg-gradient-to-r from-transparent to-white"
+                              style="pointer-events: none"
                             ></div>
                           </div>
                         </div>
