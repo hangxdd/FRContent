@@ -75,24 +75,6 @@
               </MenuButton>
             </div>
 
-            <!-- Sign In Button -->
-            <router-link
-              v-if="!useAuth.user"
-              to="/login"
-              class="relative bg-blue-700 hover:bg-blue-800 text-white text-sm shadow-md focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800 inline-flex items-center justify-center rounded-xl px-4 py-2 mr-2"
-            >
-              <span class="font-bold">Sign in</span>
-            </router-link>
-
-            <!-- Register Button -->
-            <router-link
-              v-if="!useAuth.user"
-              to="/register"
-              class="relative bg-gray-500 hover:bg-gray-600 text-white text-sm shadow-md focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800 inline-flex items-center justify-center rounded-xl px-4 py-2"
-            >
-              <span class="font-bold">Register</span>
-            </router-link>
-
             <transition
               enter-active-class="transition ease-out duration-100"
               enter-from-class="transform opacity-0 scale-95"
