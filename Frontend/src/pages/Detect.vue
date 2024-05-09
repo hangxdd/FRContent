@@ -1,5 +1,8 @@
 <template>
-  <div class="w-full max-w-lg m-10 sm:px-0">
+  <div v-if="!useAuth.user" class="flex justify-center items-center h-screen">
+    <h3 class="text-3xl text-red-500 font-bold">No data</h3>
+  </div>
+  <div v-if="useAuth.user" class="w-full max-w-lg m-10 sm:px-0">
     <TabGroup>
       <TabList class="flex flex-col md:flex-row rounded-xl bg-blue-900/20 p-1">
         <Tab

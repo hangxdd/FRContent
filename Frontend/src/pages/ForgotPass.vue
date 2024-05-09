@@ -1,6 +1,6 @@
 <template>
   <div class="flex min-h-screen flex-1 flex-col justify-center px-6 py-12 lg:px-8">
-    <div class="bg-gray-100 w-1/3 mx-auto p-4 rounded-xl shadow-md">
+    <div class="bg-gray-100 md:w-1/3 mx-auto p-4 rounded-xl shadow-md">
       <div class="grid grid-cols-3 items-center -mb-4">
         <router-link to="/login" class="flex items-center justify-self-start">
           <FontAwesomeIcon

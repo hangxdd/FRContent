@@ -1,5 +1,11 @@
 <template>
-  <div class="min-h-screen py-6 flex flex-col justify-center sm:py-12">
+  <div v-if="!useAuth.user" class="flex justify-center items-center h-screen">
+    <h3 class="text-3xl text-red-500 font-bold">No data</h3>
+  </div>
+  <div
+    v-if="useAuth.user"
+    class="min-h-screen py-6 flex flex-col justify-center sm:py-12"
+  >
     <div class="relative py-3 sm:max-w-xl sm:mx-auto">
       <div
         class="absolute inset-0 bg-gradient-to-r from-cyan-100 to-cyan-400 shadow-lg transform -skew-y-6 sm:skew-y-0 sm:rotate-6 sm:rounded-3xl"

@@ -1,5 +1,8 @@
 <template>
-  <div class="w-full px-4 pt-16">
+  <div v-if="!useAuth.user" class="flex justify-center items-center h-screen">
+    <h3 class="text-3xl text-red-500 font-bold">No data</h3>
+  </div>
+  <div v-if="useAuth.user" class="w-full px-4 pt-16">
     <div class="mx-auto w-full max-w-lg rounded-2xl bg-white p-2 shadow-md">
       <Disclosure v-slot="{ open }">
         <DisclosureButton
