@@ -84,7 +84,7 @@
             </p>
           </div>
           <div
-            class="flex items-center mt-10 -mb-10 italic hover:underline text-purple-700"
+            class="flex items-center mt-10 -mb-4 md:-mb-10 italic hover:underline text-purple-700"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
