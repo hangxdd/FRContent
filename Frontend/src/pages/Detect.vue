@@ -66,7 +66,8 @@
                 </button>
                 <button
                   v-show="isPlaying"
-                  class="bg-green-600 hover:bg-green-500 text-white font-bold py-2 px-4 rounded"
+                  :disabled="isButtonDisabled"
+                  class="bg-green-600 hover:bg-green-500 text-white font-bold py-2 px-4 rounded disabled:bg-gray-400 disabled:text-gray-200 duration-200"
                   @click="captureEmotion"
                 >
                   Capture Emotion
@@ -89,7 +90,8 @@
                 Based on the emotion: <strong>{{ emotionValue }}</strong>
               </p>
               <button
-                class="w-full bg-green-600 hover:bg-green-500 text-white font-bold py-2 px-4 rounded mb-4 flex justify-center items-center"
+                class="w-full bg-green-600 hover:bg-green-500 text-white disabled:bg-gray-400 disabled:text-gray-200 font-bold py-2 px-4 rounded mb-4 flex justify-center items-center duration-200"
+                :disabled="isButtonDisabled"
                 @click="captureEmotion"
               >
                 <svg
@@ -399,7 +401,7 @@
                       </div>
                     </div>
                     <button
-                      class="w-full text-white font-bold p-2 mt-4 rounded flex justify-center items-center"
+                      class="w-full text-white font-bold p-2 mt-4 rounded flex justify-center items-center duration-200"
                       :class="
                         isFavourited[movie.id]
                           ? 'bg-yellow-500 hover:bg-yellow-400'
@@ -449,7 +451,7 @@
               </p>
               <button
                 v-if="categories.History && categories.History.length > 0"
-                class="w-full bg-red-600 hover:bg-red-500 text-white font-bold p-2 mb-4 rounded flex justify-center items-center"
+                class="w-full bg-red-600 hover:bg-red-500 text-white font-bold p-2 mb-4 rounded flex justify-center items-center duration-200"
                 @click="deleteAllHistoryMovies"
               >
                 <svg
@@ -908,7 +910,7 @@
                       </div>
                     </div>
                     <button
-                      class="w-full text-white font-bold p-2 mt-4 rounded flex justify-center items-center"
+                      class="w-full text-white font-bold p-2 mt-4 rounded flex justify-center items-center duration-200"
                       :class="
                         isFavourited[movie.id]
                           ? 'bg-yellow-500 hover:bg-yellow-400'
@@ -933,7 +935,7 @@
                       {{ isFavourited[movie.id] ? "Unfavourite" : "Favourite" }}
                     </button>
                     <button
-                      class="w-full bg-red-600 hover:bg-red-500 text-white font-bold p-2 mt-4 rounded flex justify-center items-center"
+                      class="w-full bg-red-600 hover:bg-red-500 text-white font-bold p-2 mt-4 rounded flex justify-center items-center duration-200"
                       @click="deleteHistoryMovie(movie.id)"
                     >
                       <svg
@@ -1415,7 +1417,7 @@
                       </div>
                     </div>
                     <button
-                      class="w-full text-white font-bold p-2 mt-4 rounded flex justify-center items-center"
+                      class="w-full text-white font-bold p-2 mt-4 rounded flex justify-center items-center duration-200"
                       :class="
                         isFavourited[movie.id]
                           ? 'bg-yellow-500 hover:bg-yellow-400'
@@ -1478,6 +1480,7 @@ const isGenerating = ref(false);
 const isOpen = ref(false);
 const activeTab = ref("Detect");
 const tabs = ref(null);
+const isButtonDisabled = ref(false);
 
 // Reactive
 let isFavourited = reactive({});
@@ -1789,6 +1792,7 @@ const mapEmotionToKeywords = (emotion) => {
 };
 
 const captureEmotion = async () => {
+  isButtonDisabled.value = true;
   isGenerating.value = true;
   const initialLastEmotion = lastEmotion.value;
   try {
@@ -1869,6 +1873,7 @@ const captureEmotion = async () => {
   } finally {
     isGenerating.value = false;
     lastEmotion.value = initialLastEmotion;
+    isButtonDisabled.value = false;
   }
 };
 
