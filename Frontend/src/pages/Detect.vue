@@ -867,7 +867,7 @@
                                 class="flex flex-col items-center shadow-md rounded-md bg-white"
                               >
                                 <a :href="actor.link" target="_blank">
-                                  <div class="flex w-32 h-40 overflow-hidden rounded-md">
+                                  <div class="flex w-36 h-40 rounded-md">
                                     <img
                                       v-if="actor.profile_path"
                                       :src="
@@ -875,7 +875,7 @@
                                         actor.profile_path
                                       "
                                       alt=""
-                                      class="w-full h-full object-cover object-center"
+                                      class="w-full h-full rounded object-cover object-center"
                                     />
                                     <div
                                       v-else
@@ -1475,7 +1475,6 @@ const lastEmotion = ref(null);
 const recommendedEmotion = ref(null);
 const recommendedMovies = ref([]);
 const isGenerating = ref(false);
-const genres = ref([]);
 const isOpen = ref(false);
 const activeTab = ref("Detect");
 const tabs = ref(null);
@@ -1504,23 +1503,6 @@ onMounted(async () => {
   await faceapi.nets.ssdMobilenetv1.loadFromUri("/models");
   await faceapi.nets.faceLandmark68Net.loadFromUri("/models");
   await faceapi.nets.faceExpressionNet.loadFromUri("/models");
-
-  // Fetch the list of all genres
-  const url = "https://api.themoviedb.org/3/genre/movie/list";
-  const options = {
-    method: "GET",
-    headers: {
-      accept: "application/json",
-      Authorization:
-        "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIzNGYxM2UyZTE4MWJmMzM0ZDUxMGFiMzBjZDc5NTM1NyIsInN1YiI6IjY2MjEwMDVkODdhZTdiMDE0Y2Q3YmZiYyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.EiqnJa2IzQIaOuntxsikS0uVvaHMvX75lcPKVSLt3CQ",
-    },
-  };
-  const response = await fetch(url, options);
-  const json = await response.json();
-  genres.value = json.genres;
-
-  await fetchUserHistoryMovies();
-  await fetchFavouriteMovies();
 });
 
 onBeforeUnmount(() => {
@@ -1532,6 +1514,11 @@ onBeforeUnmount(() => {
 watchEffect(() => {
   if (activeTab.value !== "Detect" && isPlaying.value) {
     toggleVideo();
+  }
+  if (activeTab.value === "History") {
+    fetchUserHistoryMovies();
+  } else if (activeTab.value === "Favourites") {
+    fetchFavouriteMovies();
   }
 });
 
@@ -1597,9 +1584,7 @@ const fetchUserHistoryMovies = async () => {
 };
 
 const fetchMovieData = async (movieId) => {
-  const url = `https://api.themoviedb.org/3/movie/${movieId}`;
-  const providersUrl = `https://api.themoviedb.org/3/movie/${movieId}/watch/providers`;
-  const actorsUrl = `https://api.themoviedb.org/3/movie/${movieId}/credits`;
+  const url = `https://api.themoviedb.org/3/movie/${movieId}?append_to_response=watch/providers,credits`;
   const options = {
     method: "GET",
     headers: {
@@ -1609,24 +1594,16 @@ const fetchMovieData = async (movieId) => {
     },
   };
 
-  const [movieResponse, providersResponse, trailers, actorsResponse] = await Promise.all([
-    fetch(url, options),
-    fetch(providersUrl, options),
-    fetchMovieTrailers(movieId, options),
-    fetch(actorsUrl, options),
-  ]);
-
-  const movie = await movieResponse.json();
-  const providers = await providersResponse.json();
-  const actors = await actorsResponse.json();
+  const response = await fetch(url, options);
+  const movie = await response.json();
 
   return {
     ...movie,
     genres: movie.genres.map((genre) => genre.name),
-    providers: providers.results.US, // assuming you want providers for the US
-    trailers: trailers,
+    providers: movie["watch/providers"].results.US, // assuming you want providers for the US
+    trailers: await fetchMovieTrailers(movieId, options), // keep this separate as it's not available in the append_to_response parameter
     showProviders: false,
-    actors: actors.cast, // assuming you want the cast of the movie
+    actors: movie.credits.cast, // assuming you want the cast of the movie
   };
 };
 
@@ -1773,6 +1750,20 @@ const getKeywords = async (emotion) => {
 const mapEmotionToKeywords = (emotion) => {
   const mappings = {
     neutral: ["documentary", "biography", "news", "reality-tv", "history"],
+    happy: ["comedy", "romance", "family", "animation", "musical", "fantasy"],
+    sad: ["drama", "romance", "biography", "history", "music", "war"],
+    angry: ["action", "thriller", "crime", "war", "adventure", "drama"],
+    fearful: [
+      "horror",
+      "thriller",
+      "mystery",
+      "suspense",
+      "crime",
+      "drama",
+      "sci-fi",
+      "dark",
+    ],
+    disgusted: ["horror", "thriller", "crime", "mystery"],
     surprised: [
       "thriller",
       "mystery",
@@ -1785,25 +1776,13 @@ const mapEmotionToKeywords = (emotion) => {
       "fantasy",
       "drama",
     ],
-    fearful: [
-      "horror",
-      "thriller",
-      "mystery",
-      "suspense",
-      "crime",
-      "drama",
-      "sci-fi",
-      "dark",
-      // ... other genres
-    ],
-    // Add more mappings if needed
   };
 
-  // If the emotion is in the mappings, return the mapped genres
+  // If the emotion is in the mappings, return the mapped keywords
   if (emotion in mappings) {
     return mappings[emotion];
   }
-  // If the emotion is not in the mappings, return the emotion as a genre
+  // If the emotion is not in the mappings, return the emotion as a keyword
   else {
     return [emotion];
   }
@@ -1811,6 +1790,7 @@ const mapEmotionToKeywords = (emotion) => {
 
 const captureEmotion = async () => {
   isGenerating.value = true;
+  const initialLastEmotion = lastEmotion.value;
   try {
     if (lastEmotion.value) {
       const mappedEmotions = mapEmotionToKeywords(lastEmotion.value);
@@ -1837,23 +1817,28 @@ const captureEmotion = async () => {
 
       recommendedEmotion.value = lastEmotion.value;
 
-      // Fetch the top 3 movies for each keyword in parallel
-      const moviePromises = keywordIds.map((keywordId) => fetchTopMovie(keywordId));
+      // Fetch the movies for each keyword in parallel
+      const moviePromises = keywordIds.map((keywordId) => fetchMovies(keywordId));
       const movies = (await Promise.all(moviePromises)).flat();
 
-      // Sort the movies by vote average and take the top 3
-      movies.sort((a, b) => b.vote_average - a.vote_average);
+      // Randomly select 3 unique movies
+      const selectedMovies = [];
+      while (selectedMovies.length < 3 && movies.length > 0) {
+        const randomIndex = Math.floor(Math.random() * movies.length);
+        const selectedMovie = movies[randomIndex];
+        if (!selectedMovies.find((movie) => movie.id === selectedMovie.id)) {
+          // Check if the movie has already been selected
+          selectedMovies.push(selectedMovie);
+        }
+        movies.splice(randomIndex, 1); // Remove the selected movie
+      }
 
-      // Use a Set to ensure uniqueness of movies
-      const uniqueMovies = Array.from(
-        new Set(movies.map((movie) => movie.id))
-      ).map((id) => movies.find((movie) => movie.id === id));
+      recommendedMovies.value = selectedMovies.map((movie) => ({
+        ...movie,
+        expanded: false,
+      }));
 
-      recommendedMovies.value = uniqueMovies
-        .slice(0, 3)
-        .map((movie) => ({ ...movie, expanded: false }));
-
-      console.log(uniqueMovies);
+      console.log(selectedMovies);
 
       // Find the index of the "Recommendations" tab
       const index = Object.keys(categories.value).indexOf("Recommendations");
@@ -1883,11 +1868,13 @@ const captureEmotion = async () => {
     toast.error("Error fetching data");
   } finally {
     isGenerating.value = false;
+    lastEmotion.value = initialLastEmotion;
   }
 };
 
-const fetchTopMovie = async (keywordId) => {
-  const url = `https://api.themoviedb.org/3/discover/movie?sort_by=vote_count.desc&with_keywords=${keywordId}&page=1`;
+const fetchMovies = async (keywordId) => {
+  const url = `https://api.themoviedb.org/3/discover/movie?with_keywords=${keywordId}&page=1`;
+  const genreUrl = `https://api.themoviedb.org/3/genre/movie/list`;
   const options = {
     method: "GET",
     headers: {
@@ -1900,12 +1887,17 @@ const fetchTopMovie = async (keywordId) => {
   const response = await fetch(url, options);
   const json = await response.json();
 
-  const topMovies = json.results.slice(0, 3).map(async (movie) => {
+  const genreResponse = await fetch(genreUrl, options);
+  const genreJson = await genreResponse.json();
+
+  const genres = genreJson.genres;
+
+  const movies = json.results.map(async (movie) => {
     const movieData = await fetchMovieData(movie.id);
     return {
       ...movie,
       genres: movie.genre_ids.map(
-        (id) => genres.value.find((genre) => genre.id === id)?.name || "Unknown"
+        (id) => genres.find((genre) => genre.id === id)?.name || "Unknown"
       ),
       providers: movieData.providers,
       trailers: movieData.trailers,
@@ -1913,7 +1905,7 @@ const fetchTopMovie = async (keywordId) => {
     };
   });
 
-  return Promise.all(topMovies);
+  return Promise.all(movies);
 };
 
 const fetchMovieTrailers = async (movieId, options) => {
