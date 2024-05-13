@@ -46,9 +46,10 @@
                 ></canvas>
                 <div
                   v-show="isGenerating"
-                  class="absolute top-0 left-0 w-full h-full rounded bg-gray-900 bg-opacity-80 flex items-center justify-center text-white text-2xl"
+                  class="absolute top-0 left-0 w-full h-full rounded bg-gray-900 bg-opacity-80 flex flex-col items-center justify-center text-white"
                 >
-                  Generating movies...
+                  <h1 class="text-3xl">Generating movies...</h1>
+                  <p class="text-md mt-1">hold your emotion still</p>
                 </div>
               </div>
               <div class="flex flex-col justify-between mt-4">

@@ -130,11 +130,6 @@
       <div
         class="rounded-lg shadow-md bg-white ring-1 ring-black ring-opacity-5 overflow-hidden"
       >
-        <div class="px-5 pt-4 flex items-center justify-between">
-          <div>
-            <!-- Your logo here -->
-          </div>
-        </div>
         <div class="px-2 pt-2 pb-3 space-y-1">
           <router-link
             v-for="item in navigation"
