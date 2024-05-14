@@ -69,6 +69,15 @@ const routes = [
       requiresAuth: true,
     },
   },
+  {
+    path: "/randmovie",
+    name: "Random Movie",
+    component: () => import("../pages/randmovie.vue"),
+    meta: {
+      title: "Random | FRContent",
+      requiresAuth: true,
+    },
+  },
 ]
 
 const router = createRouter({
