@@ -443,6 +443,19 @@ const generateRandomMovie = async () => {
 
       toast.success("Random movie generated successfully");
       console.log(movieData.value);
+
+      const userId = useAuth.user.id;
+
+      // Add the movie to the user's history
+      const historyMoviesPromise = axios
+        .post("/api/history_movies", {
+          user_id: userId,
+          movie_id: movieData.value.id, // assuming movieData.value contains the movie id
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+      await historyMoviesPromise;
     } else {
       console.log("No movies found on the random page");
     }

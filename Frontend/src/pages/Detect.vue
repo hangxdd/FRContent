@@ -1603,11 +1603,11 @@ const fetchMovieData = async (movieId) => {
 
   return {
     ...movie,
-    genres: movie.genres.map((genre) => genre.name),
-    providers: movie["watch/providers"].results.US, // assuming you want providers for the US
+    genres: movie.genres ? movie.genres.map((genre) => genre.name) : [],
+    providers: movie["watch/providers"] ? movie["watch/providers"].results.US : {}, // assuming you want providers for the US
     trailers: await fetchMovieTrailers(movieId, options), // keep this separate as it's not available in the append_to_response parameter
     showProviders: false,
-    actors: movie.credits.cast, // assuming you want the cast of the movie
+    actors: movie.credits ? movie.credits.cast : [], // assuming you want the cast of the movie
   };
 };
 
@@ -1918,7 +1918,9 @@ const fetchMovieTrailers = async (movieId, options) => {
   const trailersUrl = `https://api.themoviedb.org/3/movie/${movieId}/videos`;
   const trailersResponse = await fetch(trailersUrl, options);
   const trailersJson = await trailersResponse.json();
-  return trailersJson.results.filter((video) => video.type === "Trailer");
+  return trailersJson.results
+    ? trailersJson.results.filter((video) => video.type === "Trailer")
+    : [];
 };
 
 const toggleVideo = async () => {

@@ -31,7 +31,7 @@ class HistoryMoviesController extends Controller
 
         $history_movie->save();
 
-        return response()->json('Successfully inserted recommended movies into the database');
+        return response()->json('Successfully inserted movies into the database');
     }
 
     public function getMoviesForUser($userId)
