@@ -9,7 +9,7 @@
         Can't decide what to watch? Let us pick a movie for you!
       </p>
       <button
-        class="w-full bg-green-600 hover:bg-green-500 text-white disabled:bg-gray-400 disabled:text-gray-200 font-bold py-2 px-4 rounded mb-4 flex justify-center items-center duration-200"
+        class="w-full bg-green-600 hover:bg-green-500 text-white disabled:bg-gray-400 disabled:text-gray-200 font-semi py-2 px-4 rounded mb-4 flex justify-center items-center duration-200"
         :disabled="isButtonDisabled"
         @click="generateRandomMovie"
       >
@@ -103,7 +103,7 @@
           <p v-else class="mt-4 italic text-red-500">No trailer available...</p>
           <div class="mt-4">
             <button
-              class="mt-2 p-2 font-bold text-center text-white bg-purple-600 hover:bg-purple-500 rounded w-full flex items-center justify-between"
+              class="mt-2 p-2 font-semi text-center text-white bg-purple-600 hover:bg-purple-500 rounded w-full flex items-center justify-between"
               @click="showProviders = !showProviders"
             >
               <div class="flex items-center justify-center space-x-2 flex-grow">
@@ -199,7 +199,7 @@
           <div class="mt-4">
             <button
               @click="showActors = !showActors"
-              class="mt-2 p-2 font-bold text-center text-white bg-blue-600 hover:bg-blue-500 rounded w-full flex items-center justify-between"
+              class="mt-2 p-2 font-semibold text-center text-white bg-blue-600 hover:bg-blue-500 rounded w-full flex items-center justify-between"
             >
               <div class="flex items-center justify-center space-x-2 flex-grow">
                 <svg
@@ -281,7 +281,7 @@
               </p>
             </div>
             <button
-              class="w-full text-white font-bold p-2 mt-4 rounded flex justify-center items-center duration-200"
+              class="w-full text-white font-semibold p-2 mt-4 rounded flex justify-center items-center duration-200"
               :class="
                 isFavourited[movieData.id]
                   ? 'bg-yellow-500 hover:bg-yellow-400'

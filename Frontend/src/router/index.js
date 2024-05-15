@@ -54,7 +54,7 @@ const routes = [
   {
     path: "/faq",
     name: "FAQ",
-    component: () => import("../pages/faq.vue"),
+    component: () => import("../pages/Faq.vue"),
     meta: {
       title: "FAQ | FRContent",
       requiresAuth: true,
@@ -72,9 +72,18 @@ const routes = [
   {
     path: "/randmovie",
     name: "Random Movie",
-    component: () => import("../pages/randmovie.vue"),
+    component: () => import("../pages/Randmovie.vue"),
     meta: {
       title: "Random | FRContent",
+      requiresAuth: true,
+    },
+  },
+  {
+    path: "/profile",
+    name: "Profile",
+    component: () => import("../pages/Profile.vue"),
+    meta: {
+      title: "Profile | FRContent",
       requiresAuth: true,
     },
   },

@@ -15,8 +15,22 @@
       <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
         <form class="space-y-6" @submit.prevent="submitLogin">
           <div>
-            <label for="email" class="block text-sm font-medium leading-6 text-gray-900"
-              >Email address</label
+            <label for="email" class="flex text-sm font-medium leading-6 text-gray-900"
+              ><svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke-width="1.5"
+                stroke="currentColor"
+                class="w-6 h-6 mr-1"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M16.5 12a4.5 4.5 0 1 1-9 0 4.5 4.5 0 0 1 9 0Zm0 0c0 1.657 1.007 3 2.25 3S21 13.657 21 12a9 9 0 1 0-2.636 6.364M16.5 12V8.25"
+                />
+              </svg>
+              Email address</label
             >
             <div class="mt-2">
               <input
@@ -34,8 +48,22 @@
             <div class="flex flex-col md:flex-row items-center justify-between">
               <label
                 for="password"
-                class="block text-sm font-medium leading-6 text-gray-900"
-                >Password</label
+                class="flex text-sm font-medium leading-6 text-gray-900"
+                ><svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke-width="1.5"
+                  stroke="currentColor"
+                  class="w-6 h-6 mr-1"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M15.75 5.25a3 3 0 0 1 3 3m3 0a6 6 0 0 1-7.029 5.912c-.563-.097-1.159.026-1.563.43L10.5 17.25H8.25v2.25H6v2.25H2.25v-2.818c0-.597.237-1.17.659-1.591l6.499-6.499c.404-.404.527-1 .43-1.563A6 6 0 1 1 21.75 8.25Z"
+                  />
+                </svg>
+                Password</label
               >
               <div class="text-sm">
                 <router-link
@@ -59,9 +87,24 @@
 
           <div>
             <button
+              :disabled="isButtonDisabled"
               type="submit"
-              class="flex w-full justify-center rounded-md bg-blue-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
+              class="flex w-full justify-center rounded-md bg-blue-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 disabled:bg-gray-400 disabled:text-gray-200 duration-200"
             >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke-width="1.5"
+                stroke="currentColor"
+                class="w-6 h-6 mr-1"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M8.25 9V5.25A2.25 2.25 0 0 1 10.5 3h6a2.25 2.25 0 0 1 2.25 2.25v13.5A2.25 2.25 0 0 1 16.5 21h-6a2.25 2.25 0 0 1-2.25-2.25V15M12 9l3 3m0 0-3 3m3-3H2.25"
+                />
+              </svg>
               Sign in
             </button>
           </div>
@@ -91,6 +134,7 @@ import axios from "axios";
 const router = useRouter();
 const useAuth = authStore();
 const toast = useToast();
+const isButtonDisabled = ref(false);
 
 const form = ref({
   email: "",
@@ -98,6 +142,7 @@ const form = ref({
 });
 
 const submitLogin = async () => {
+  isButtonDisabled.value = true;
   await useAuth.getToken();
   await axios
     .post("/login", {
@@ -113,5 +158,6 @@ const submitLogin = async () => {
     .catch((error) => {
       toast.error(error.response.data.message);
     });
+  isButtonDisabled.value = false;
 };
 </script>

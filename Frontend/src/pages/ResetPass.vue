@@ -15,9 +15,20 @@
       <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
         <form class="space-y-6" @submit.prevent="submitResetPass">
           <div>
-            <label
-              for="password"
-              class="block text-sm font-medium leading-6 text-gray-900"
+            <label for="password" class="flex text-sm font-medium leading-6 text-gray-900"
+              ><svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke-width="1.5"
+                stroke="currentColor"
+                class="w-6 h-6 mr-1"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M15.75 5.25a3 3 0 0 1 3 3m3 0a6 6 0 0 1-7.029 5.912c-.563-.097-1.159.026-1.563.43L10.5 17.25H8.25v2.25H6v2.25H2.25v-2.818c0-.597.237-1.17.659-1.591l6.499-6.499c.404-.404.527-1 .43-1.563A6 6 0 1 1 21.75 8.25Z"
+                /></svg
               >Password</label
             >
             <div class="mt-2">
@@ -35,7 +46,20 @@
           <div>
             <label
               for="confirm-password"
-              class="block text-sm font-medium leading-6 text-gray-900"
+              class="flex text-sm font-medium leading-6 text-gray-900"
+              ><svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke-width="1.5"
+                stroke="currentColor"
+                class="w-6 h-6 mr-1"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M15.75 5.25a3 3 0 0 1 3 3m3 0a6 6 0 0 1-7.029 5.912c-.563-.097-1.159.026-1.563.43L10.5 17.25H8.25v2.25H6v2.25H2.25v-2.818c0-.597.237-1.17.659-1.591l6.499-6.499c.404-.404.527-1 .43-1.563A6 6 0 1 1 21.75 8.25Z"
+                /></svg
               >Confirm Password</label
             >
             <div class="mt-2">
@@ -52,10 +76,24 @@
 
           <div>
             <button
+              :disabled="isButtonDisabled"
               type="submit"
               class="flex w-full justify-center rounded-md bg-blue-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
             >
-              Submit
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke-width="1.5"
+                stroke="currentColor"
+                class="w-6 h-6 mr-1"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="m15 15 6-6m0 0-6-6m6 6H9a6 6 0 0 0 0 12h3"
+                /></svg
+              >Submit
             </button>
           </div>
         </form>
@@ -75,6 +113,7 @@ const router = useRouter();
 const route = useRoute();
 const useAuth = authStore();
 const toast = useToast();
+const isButtonDisabled = ref(false);
 
 const form = ref({
   token: route.params.token,
@@ -84,6 +123,7 @@ const form = ref({
 });
 
 const submitResetPass = async () => {
+  isButtonDisabled.value = true;
   await useAuth.getToken();
   await axios
     .post("/reset-password", {
@@ -103,5 +143,6 @@ const submitResetPass = async () => {
     .catch((error) => {
       toast.error(error.response.data.message);
     });
+  isButtonDisabled.value = false;
 };
 </script>

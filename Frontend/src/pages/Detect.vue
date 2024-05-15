@@ -56,21 +56,65 @@
                 <button
                   @click="toggleVideo"
                   :class="[
-                    'font-bold py-2 px-4 rounded mb-2',
+                    'flex justify-center text-centerfont-semibold py-2 px-4 rounded mb-2',
                     isPlaying
                       ? 'bg-red-600 hover:bg-red-500'
                       : 'bg-blue-600 hover:bg-blue-500',
                     'text-white',
                   ]"
                 >
+                  <svg
+                    v-if="isPlaying"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke-width="1.5"
+                    stroke="currentColor"
+                    class="w-6 h-6 mr-2"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      d="m15.75 10.5 4.72-4.72a.75.75 0 0 1 1.28.53v11.38a.75.75 0 0 1-1.28.53l-4.72-4.72M12 18.75H4.5a2.25 2.25 0 0 1-2.25-2.25V9m12.841 9.091L16.5 19.5m-1.409-1.409c.407-.407.659-.97.659-1.591v-9a2.25 2.25 0 0 0-2.25-2.25h-9c-.621 0-1.184.252-1.591.659m12.182 12.182L2.909 5.909M1.5 4.5l1.409 1.409"
+                    />
+                  </svg>
+                  <svg
+                    v-else
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke-width="1.5"
+                    stroke="currentColor"
+                    class="w-6 h-6 mr-2"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      d="m15.75 10.5 4.72-4.72a.75.75 0 0 1 1.28.53v11.38a.75.75 0 0 1-1.28.53l-4.72-4.72M4.5 18.75h9a2.25 2.25 0 0 0 2.25-2.25v-9a2.25 2.25 0 0 0-2.25-2.25h-9A2.25 2.25 0 0 0 2.25 7.5v9a2.25 2.25 0 0 0 2.25 2.25Z"
+                    />
+                  </svg>
                   {{ isPlaying ? "Stop Video" : "Start Video" }}
                 </button>
                 <button
                   v-show="isPlaying"
                   :disabled="isButtonDisabled"
-                  class="bg-green-600 hover:bg-green-500 text-white font-bold py-2 px-4 rounded disabled:bg-gray-400 disabled:text-gray-200 duration-200"
+                  class="flex justify-center items-center bg-green-600 hover:bg-green-500 text-white font-semibold py-2 px-4 rounded disabled:bg-gray-400 disabled:text-gray-200 duration-200"
                   @click="captureEmotion"
                 >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke-width="1.5"
+                    stroke="currentColor"
+                    class="w-6 h-6 mr-2"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      d="M7.5 3.75H6A2.25 2.25 0 0 0 3.75 6v1.5M16.5 3.75H18A2.25 2.25 0 0 1 20.25 6v1.5m0 9V18A2.25 2.25 0 0 1 18 20.25h-1.5m-9 0H6A2.25 2.25 0 0 1 3.75 18v-1.5M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
+                    />
+                  </svg>
                   Capture Emotion
                 </button>
               </div>
@@ -91,7 +135,7 @@
                 Based on the emotion: <strong>{{ emotionValue }}</strong>
               </p>
               <button
-                class="w-full bg-green-600 hover:bg-green-500 text-white disabled:bg-gray-400 disabled:text-gray-200 font-bold py-2 px-4 rounded mb-4 flex justify-center items-center duration-200"
+                class="w-full bg-green-600 hover:bg-green-500 text-white disabled:bg-gray-400 disabled:text-gray-200 font-semibold py-2 px-4 rounded mb-4 flex justify-center items-center duration-200"
                 :disabled="isButtonDisabled"
                 @click="captureEmotion"
               >
@@ -192,7 +236,7 @@
                     <div class="mt-4">
                       <button
                         @click="movie.showProviders = !movie.showProviders"
-                        class="mt-2 p-2 font-bold text-center text-white bg-purple-600 hover:bg-purple-500 rounded w-full flex items-center justify-between"
+                        class="mt-2 p-2 font-semibold text-center text-white bg-purple-600 hover:bg-purple-500 rounded w-full flex items-center justify-between"
                       >
                         <div class="flex items-center justify-center space-x-2 flex-grow">
                           <svg
@@ -316,7 +360,7 @@
                     <div class="mt-4">
                       <button
                         @click="movie.showActors = !movie.showActors"
-                        class="mt-2 p-2 font-bold text-center text-white bg-blue-600 hover:bg-blue-500 rounded w-full flex items-center justify-between"
+                        class="mt-2 p-2 font-semibold text-center text-white bg-blue-600 hover:bg-blue-500 rounded w-full flex items-center justify-between"
                       >
                         <div class="flex items-center justify-center space-x-2 flex-grow">
                           <svg
@@ -402,7 +446,7 @@
                       </div>
                     </div>
                     <button
-                      class="w-full text-white font-bold p-2 mt-4 rounded flex justify-center items-center duration-200"
+                      class="w-full text-white font-semibold p-2 mt-4 rounded flex justify-center items-center duration-200"
                       :class="
                         isFavourited[movie.id]
                           ? 'bg-yellow-500 hover:bg-yellow-400'
@@ -452,7 +496,7 @@
               </p>
               <button
                 v-if="categories.History && categories.History.length > 0"
-                class="w-full bg-red-600 hover:bg-red-500 text-white font-bold p-2 mb-4 rounded flex justify-center items-center duration-200"
+                class="w-full bg-red-600 hover:bg-red-500 text-white font-semibold p-2 mb-4 rounded flex justify-center items-center duration-200"
                 @click="deleteAllHistoryMovies"
               >
                 <svg
@@ -475,7 +519,7 @@
                 <div class="group">
                   <MenuButton
                     @click="isOpen = !isOpen"
-                    class="inline-flex w-full justify-between rounded-md bg-blue-500 hover:bg-blue-400 mb-4 p-1 font-bold text-white"
+                    class="inline-flex w-full justify-between rounded-md bg-blue-500 hover:bg-blue-400 mb-4 p-1 font-semibold text-white"
                   >
                     <div class="flex-grow flex justify-center">
                       <div class="flex items-center">
@@ -701,7 +745,7 @@
                     <div class="mt-4">
                       <button
                         @click="movie.showProviders = !movie.showProviders"
-                        class="mt-2 p-2 font-bold text-center text-white bg-purple-600 hover:bg-purple-500 rounded w-full flex items-center justify-between"
+                        class="mt-2 p-2 font-semibold text-center text-white bg-purple-600 hover:bg-purple-500 rounded w-full flex items-center justify-between"
                       >
                         <div class="flex items-center justify-center space-x-2 flex-grow">
                           <svg
@@ -825,7 +869,7 @@
                     <div class="mt-4">
                       <button
                         @click="movie.showActors = !movie.showActors"
-                        class="mt-2 p-2 font-bold text-center text-white bg-blue-600 hover:bg-blue-500 rounded w-full flex items-center justify-between"
+                        class="mt-2 p-2 font-semibold text-center text-white bg-blue-600 hover:bg-blue-500 rounded w-full flex items-center justify-between"
                       >
                         <div class="flex items-center justify-center space-x-2 flex-grow">
                           <svg
@@ -911,7 +955,7 @@
                       </div>
                     </div>
                     <button
-                      class="w-full text-white font-bold p-2 mt-4 rounded flex justify-center items-center duration-200"
+                      class="w-full text-white font-semibold p-2 mt-4 rounded flex justify-center items-center duration-200"
                       :class="
                         isFavourited[movie.id]
                           ? 'bg-yellow-500 hover:bg-yellow-400'
@@ -936,7 +980,7 @@
                       {{ isFavourited[movie.id] ? "Unfavourite" : "Favourite" }}
                     </button>
                     <button
-                      class="w-full bg-red-600 hover:bg-red-500 text-white font-bold p-2 mt-4 rounded flex justify-center items-center duration-200"
+                      class="w-full bg-red-600 hover:bg-red-500 text-white font-semibold p-2 mt-4 rounded flex justify-center items-center duration-200"
                       @click="deleteHistoryMovie(movie.id)"
                     >
                       <svg
@@ -983,7 +1027,7 @@
                   <div class="group">
                     <MenuButton
                       @click="isOpen = !isOpen"
-                      class="inline-flex w-full justify-between rounded-md bg-blue-500 hover:bg-blue-400 p-1 font-bold text-white"
+                      class="inline-flex w-full justify-between rounded-md bg-blue-500 hover:bg-blue-400 p-1 font-semibold text-white"
                     >
                       <div class="flex-grow flex justify-center">
                         <div class="flex items-center">
@@ -1208,7 +1252,7 @@
                     <div class="mt-4">
                       <button
                         @click="movie.showProviders = !movie.showProviders"
-                        class="mt-2 p-2 font-bold text-center text-white bg-purple-600 hover:bg-purple-500 rounded w-full flex items-center justify-between"
+                        class="mt-2 p-2 font-semibold text-center text-white bg-purple-600 hover:bg-purple-500 rounded w-full flex items-center justify-between"
                       >
                         <div class="flex items-center justify-center space-x-2 flex-grow">
                           <svg
@@ -1332,7 +1376,7 @@
                     <div class="mt-4">
                       <button
                         @click="movie.showActors = !movie.showActors"
-                        class="mt-2 p-2 font-bold text-center text-white bg-blue-600 hover:bg-blue-500 rounded w-full flex items-center justify-between"
+                        class="mt-2 p-2 font-semibold text-center text-white bg-blue-600 hover:bg-blue-500 rounded w-full flex items-center justify-between"
                       >
                         <div class="flex items-center justify-center space-x-2 flex-grow">
                           <svg
@@ -1418,7 +1462,7 @@
                       </div>
                     </div>
                     <button
-                      class="w-full text-white font-bold p-2 mt-4 rounded flex justify-center items-center duration-200"
+                      class="w-full text-white font-semibold p-2 mt-4 rounded flex justify-center items-center duration-200"
                       :class="
                         isFavourited[movie.id]
                           ? 'bg-yellow-500 hover:bg-yellow-400'
@@ -1813,6 +1857,7 @@ const captureEmotion = async () => {
   isButtonDisabled.value = true;
   isGenerating.value = true;
   const initialLastEmotion = lastEmotion.value;
+
   try {
     if (lastEmotion.value) {
       const mappedEmotions = mapEmotionToKeywords(lastEmotion.value);
