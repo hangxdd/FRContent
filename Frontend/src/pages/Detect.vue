@@ -495,8 +495,9 @@
                 Movies fetched: <strong>{{ histMovieCount }}</strong>
               </p>
               <button
+                :disabled="isButtonDisabled"
                 v-if="categories.History && categories.History.length > 0"
-                class="w-full bg-red-600 hover:bg-red-500 text-white font-semibold p-2 mb-4 rounded flex justify-center items-center duration-200"
+                class="w-full bg-red-600 hover:bg-red-500 text-white font-semibold p-2 mb-4 rounded flex justify-center items-center disabled:bg-gray-400 disabled:text-gray-200 duration-200"
                 @click="deleteAllHistoryMovies"
               >
                 <svg
@@ -1656,6 +1657,7 @@ const fetchMovieData = async (movieId) => {
 };
 
 const deleteAllHistoryMovies = async () => {
+  isButtonDisabled.value = true;
   try {
     const userId = useAuth.user.id;
     await axios.delete(`/api/users/${userId}/history`);
@@ -1665,6 +1667,7 @@ const deleteAllHistoryMovies = async () => {
     console.error("Error deleting user history movies:", error);
     toast.error("Error deleting user history movies");
   }
+  isButtonDisabled.value = false;
 };
 
 const deleteHistoryMovie = async (movieId) => {
