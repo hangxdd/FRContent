@@ -34,7 +34,7 @@
               <div class="relative">
                 <video
                   id="myVideo"
-                  class="w-full rounded"
+                  class="w-full rounded transform scale-x-[-1]"
                   autoplay
                   muted
                   playsinline
@@ -1700,7 +1700,16 @@ const detectEmotions = async () => {
   }
 
   const context = canvas.getContext("2d");
+
+  // Reset the transformations
+  context.setTransform(1, 0, 0, 1, 0, 0);
+
+  // Clear the canvas
   context.clearRect(0, 0, canvas.width, canvas.height);
+
+  // Invert the canvas horizontally
+  context.translate(canvas.width, 0);
+  context.scale(-1, 1);
 
   const detections = await faceapi
     .detectAllFaces(videoElement, new faceapi.SsdMobilenetv1Options())
@@ -1718,9 +1727,17 @@ const detectEmotions = async () => {
     context.strokeStyle = "blue";
     context.fillStyle = "blue";
     context.stroke();
+
+    // Reset the transformations before drawing the text
+    context.setTransform(1, 0, 0, 1, 0, 0);
+
     context.font = "20px Arial";
     context.fillStyle = "white";
-    context.fillText(bestMatch.expression, left, top > 20 ? top - 5 : 20);
+    context.fillText(
+      bestMatch.expression,
+      canvas.width - left - width,
+      top > 20 ? top - 5 : 20
+    ); // Draw the text at the top left of the rectangle
   });
 
   if (isPlaying.value) {
