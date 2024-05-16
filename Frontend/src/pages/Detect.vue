@@ -343,13 +343,60 @@
                             </li>
                           </ul>
                         </div>
+                        <div
+                          v-if="movie.providers?.free && movie.providers.free.length > 0"
+                        >
+                          <h4 class="mt-2 font-bold">Free:</h4>
+                          <ul class="flex flex-wrap">
+                            <li
+                              v-for="provider in movie.providers.free"
+                              :key="'buy-' + provider.provider_id"
+                              class="mr-2 mb-1"
+                            >
+                              <a :href="movie.providers.link" target="_blank">
+                                <img
+                                  :src="
+                                    'https://image.tmdb.org/t/p/w500' + provider.logo_path
+                                  "
+                                  alt=""
+                                  class="w-12 h-auto rounded-md"
+                                />
+                              </a>
+                            </li>
+                          </ul>
+                        </div>
+                        <div
+                          v-if="movie.providers?.ads && movie.providers.ads.length > 0"
+                        >
+                          <h4 class="mt-2 font-bold">Ads:</h4>
+                          <ul class="flex flex-wrap">
+                            <li
+                              v-for="provider in movie.providers.ads"
+                              :key="'buy-' + provider.provider_id"
+                              class="mr-2 mb-1"
+                            >
+                              <a :href="movie.providers.link" target="_blank">
+                                <img
+                                  :src="
+                                    'https://image.tmdb.org/t/p/w500' + provider.logo_path
+                                  "
+                                  alt=""
+                                  class="w-12 h-auto rounded-md"
+                                />
+                              </a>
+                            </li>
+                          </ul>
+                        </div>
                         <p
                           v-if="
                             (!movie.providers?.flatrate ||
                               movie.providers.flatrate.length === 0) &&
                             (!movie.providers?.rent ||
                               movie.providers.rent.length === 0) &&
-                            (!movie.providers?.buy || movie.providers.buy.length === 0)
+                            (!movie.providers?.buy || movie.providers.buy.length === 0) &&
+                            (!movie.providers?.free ||
+                              movie.providers.free.length === 0) &&
+                            (!movie.providers?.ads || movie.providers.ads.length === 0)
                           "
                           class="italic mt-2 text-red-500"
                         >
@@ -853,13 +900,60 @@
                             </li>
                           </ul>
                         </div>
+                        <div
+                          v-if="movie.providers?.free && movie.providers.free.length > 0"
+                        >
+                          <h4 class="mt-2 font-bold">Free:</h4>
+                          <ul class="flex flex-wrap">
+                            <li
+                              v-for="provider in movie.providers.free"
+                              :key="'buy-' + provider.provider_id"
+                              class="mr-2 mb-1"
+                            >
+                              <a :href="movie.providers.link" target="_blank">
+                                <img
+                                  :src="
+                                    'https://image.tmdb.org/t/p/w500' + provider.logo_path
+                                  "
+                                  alt=""
+                                  class="w-12 h-auto rounded-md"
+                                />
+                              </a>
+                            </li>
+                          </ul>
+                        </div>
+                        <div
+                          v-if="movie.providers?.ads && movie.providers.ads.length > 0"
+                        >
+                          <h4 class="mt-2 font-bold">Ads:</h4>
+                          <ul class="flex flex-wrap">
+                            <li
+                              v-for="provider in movie.providers.ads"
+                              :key="'buy-' + provider.provider_id"
+                              class="mr-2 mb-1"
+                            >
+                              <a :href="movie.providers.link" target="_blank">
+                                <img
+                                  :src="
+                                    'https://image.tmdb.org/t/p/w500' + provider.logo_path
+                                  "
+                                  alt=""
+                                  class="w-12 h-auto rounded-md"
+                                />
+                              </a>
+                            </li>
+                          </ul>
+                        </div>
                         <p
                           v-if="
                             (!movie.providers?.flatrate ||
                               movie.providers.flatrate.length === 0) &&
                             (!movie.providers?.rent ||
                               movie.providers.rent.length === 0) &&
-                            (!movie.providers?.buy || movie.providers.buy.length === 0)
+                            (!movie.providers?.buy || movie.providers.buy.length === 0) &&
+                            (!movie.providers?.free ||
+                              movie.providers.free.length === 0) &&
+                            (!movie.providers?.ads || movie.providers.ads.length === 0)
                           "
                           class="italic mt-2 text-red-500"
                         >
@@ -1360,13 +1454,60 @@
                             </li>
                           </ul>
                         </div>
+                        <div
+                          v-if="movie.providers?.free && movie.providers.free.length > 0"
+                        >
+                          <h4 class="mt-2 font-bold">Free:</h4>
+                          <ul class="flex flex-wrap">
+                            <li
+                              v-for="provider in movie.providers.free"
+                              :key="'buy-' + provider.provider_id"
+                              class="mr-2 mb-1"
+                            >
+                              <a :href="movie.providers.link" target="_blank">
+                                <img
+                                  :src="
+                                    'https://image.tmdb.org/t/p/w500' + provider.logo_path
+                                  "
+                                  alt=""
+                                  class="w-12 h-auto rounded-md"
+                                />
+                              </a>
+                            </li>
+                          </ul>
+                        </div>
+                        <div
+                          v-if="movie.providers?.ads && movie.providers.ads.length > 0"
+                        >
+                          <h4 class="mt-2 font-bold">Ads:</h4>
+                          <ul class="flex flex-wrap">
+                            <li
+                              v-for="provider in movie.providers.ads"
+                              :key="'buy-' + provider.provider_id"
+                              class="mr-2 mb-1"
+                            >
+                              <a :href="movie.providers.link" target="_blank">
+                                <img
+                                  :src="
+                                    'https://image.tmdb.org/t/p/w500' + provider.logo_path
+                                  "
+                                  alt=""
+                                  class="w-12 h-auto rounded-md"
+                                />
+                              </a>
+                            </li>
+                          </ul>
+                        </div>
                         <p
                           v-if="
                             (!movie.providers?.flatrate ||
                               movie.providers.flatrate.length === 0) &&
                             (!movie.providers?.rent ||
                               movie.providers.rent.length === 0) &&
-                            (!movie.providers?.buy || movie.providers.buy.length === 0)
+                            (!movie.providers?.buy || movie.providers.buy.length === 0) &&
+                            (!movie.providers?.free ||
+                              movie.providers.free.length === 0) &&
+                            (!movie.providers?.ads || movie.providers.ads.length === 0)
                           "
                           class="italic mt-2 text-red-500"
                         >
