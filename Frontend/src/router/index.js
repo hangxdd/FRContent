@@ -7,6 +7,7 @@ const routes = [
     component: () => import("../pages/Home.vue"),
     meta: {
       title: "Home | FRContent",
+      requiresAuth: true,
     },
   },
   {
@@ -42,11 +43,48 @@ const routes = [
     },
   },
   {
-    path: "/scan",
-    name: "Scan",
-    component: () => import("../pages/Scan.vue"),
+    path: "/detect",
+    name: "detect",
+    component: () => import("../pages/Detect.vue"),
     meta: {
-      title: "Scan | FRContent",
+      title: "Detect | FRContent",
+      requiresAuth: true,
+    },
+  },
+  {
+    path: "/faq",
+    name: "FAQ",
+    component: () => import("../pages/Faq.vue"),
+    meta: {
+      title: "FAQ | FRContent",
+      requiresAuth: true,
+    },
+  },
+  {
+    path: "/about",
+    name: "About",
+    component: () => import("../pages/About.vue"),
+    meta: {
+      title: "About | FRContent",
+      requiresAuth: true,
+    },
+  },
+  {
+    path: "/randmovie",
+    name: "Random Movie",
+    component: () => import("../pages/Randmovie.vue"),
+    meta: {
+      title: "Random | FRContent",
+      requiresAuth: true,
+    },
+  },
+  {
+    path: "/profile",
+    name: "Profile",
+    component: () => import("../pages/Profile.vue"),
+    meta: {
+      title: "Profile | FRContent",
+      requiresAuth: true,
     },
   },
 ]
