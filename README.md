@@ -11,8 +11,8 @@ Install neccesary packages for frontend, navigate to project's 'Frontend' direct
 ### Technologies used in this project
 > Laravel v11.x, Vue 3.x, Vite 5.x, MySQL, Tailwind CSS, @vladmandic face-api.js library.
 
-### Project's technical documentation
-> link...
+### Project's technical documentation (In Latvian)
+> https://docs.google.com/document/d/156ahZM04Cs7I-NQ0HCRHlvOhK54RjPEBVUHJrf9zwFM/edit?usp=sharing
 
 ### What have i learned when creating this project?
 - I've moderately learned Laravel, setting it up, creating APIs in it, use of it's features, like Laravel Breeze, for convenient authentication system setup.
