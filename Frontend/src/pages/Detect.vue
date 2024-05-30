@@ -56,7 +56,7 @@
                 <button
                   @click="toggleVideo"
                   :class="[
-                    'flex justify-center text-centerfont-semibold py-2 px-4 rounded mb-2',
+                    'flex justify-center text-center font-semibold py-2 px-4 rounded mb-2',
                     isPlaying
                       ? 'bg-red-600 hover:bg-red-500'
                       : 'bg-blue-600 hover:bg-blue-500',

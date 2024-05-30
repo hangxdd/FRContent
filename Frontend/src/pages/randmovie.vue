@@ -103,7 +103,7 @@
           <p v-else class="mt-4 italic text-red-500">No trailer available...</p>
           <div class="mt-4">
             <button
-              class="mt-2 p-2 font-semi text-center text-white bg-purple-600 hover:bg-purple-500 rounded w-full flex items-center justify-between"
+              class="mt-2 p-2 font-semibold text-center text-white bg-purple-600 hover:bg-purple-500 rounded w-full flex items-center justify-between"
               @click="showProviders = !showProviders"
             >
               <div class="flex items-center justify-center space-x-2 flex-grow">
