@@ -1676,11 +1676,11 @@ let isFavourited = reactive({});
 const histMovieCount = computed(() => categories.value.History.length);
 const favMovieCount = computed(() => categories.value.Favourites.length);
 
-// Stores and other services
+// Authstore and notifications
 const useAuth = authStore();
 const toast = useToast();
 
-// Categories
+// Categories for tabs
 const categories = ref({
   Detect: [],
   Recommendations: [],
@@ -1779,8 +1779,7 @@ const fetchMovieData = async (movieId) => {
     method: "GET",
     headers: {
       accept: "application/json",
-      Authorization:
-        "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIzNGYxM2UyZTE4MWJmMzM0ZDUxMGFiMzBjZDc5NTM1NyIsInN1YiI6IjY2MjEwMDVkODdhZTdiMDE0Y2Q3YmZiYyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.EiqnJa2IzQIaOuntxsikS0uVvaHMvX75lcPKVSLt3CQ",
+      Authorization: `Bearer ${import.meta.env.VITE_TMDB_API_KEY}`,
     },
   };
 
@@ -1790,10 +1789,10 @@ const fetchMovieData = async (movieId) => {
   return {
     ...movie,
     genres: movie.genres ? movie.genres.map((genre) => genre.name) : [],
-    providers: movie["watch/providers"] ? movie["watch/providers"].results.US : {}, // assuming you want providers for the US
-    trailers: await fetchMovieTrailers(movieId, options), // keep this separate as it's not available in the append_to_response parameter
+    providers: movie["watch/providers"] ? movie["watch/providers"].results.US : {}, // providers for US
+    trailers: await fetchMovieTrailers(movieId, options),
     showProviders: false,
-    actors: movie.credits ? movie.credits.cast : [], // assuming you want the cast of the movie
+    actors: movie.credits ? movie.credits.cast : [],
   };
 };
 
@@ -1940,8 +1939,7 @@ const getKeywords = async (emotion) => {
       method: "GET",
       headers: {
         accept: "application/json",
-        Authorization:
-          "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIzNGYxM2UyZTE4MWJmMzM0ZDUxMGFiMzBjZDc5NTM1NyIsInN1YiI6IjY2MjEwMDVkODdhZTdiMDE0Y2Q3YmZiYyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.EiqnJa2IzQIaOuntxsikS0uVvaHMvX75lcPKVSLt3CQ",
+        Authorization: `Bearer ${import.meta.env.VITE_TMDB_API_KEY}`,
       },
     };
 
@@ -2091,8 +2089,7 @@ const fetchMovies = async (keywordId) => {
     method: "GET",
     headers: {
       accept: "application/json",
-      Authorization:
-        "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIzNGYxM2UyZTE4MWJmMzM0ZDUxMGFiMzBjZDc5NTM1NyIsInN1YiI6IjY2MjEwMDVkODdhZTdiMDE0Y2Q3YmZiYyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.EiqnJa2IzQIaOuntxsikS0uVvaHMvX75lcPKVSLt3CQ",
+      Authorization: `Bearer ${import.meta.env.VITE_TMDB_API_KEY}`,
     },
   };
 
@@ -2113,7 +2110,7 @@ const fetchMovies = async (keywordId) => {
       ),
       providers: movieData.providers,
       trailers: movieData.trailers,
-      actors: movieData.actors, // added actors property
+      actors: movieData.actors,
     };
   });
 
