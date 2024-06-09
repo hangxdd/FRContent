@@ -8,7 +8,7 @@ Install neccesary packages for backend, navigate to project's 'Backend' director
 Install neccesary packages for frontend, navigate to project's 'Frontend' directory and run in terminal:
 > npm install
 
-Run migrations, to setup the database
+Run migrations, to setup the database:
 > php artisan migrate
 
 _Also put your TMDB API key in the 'Frontend' directory's .env file_
