@@ -8,6 +8,18 @@ Install neccesary packages for backend, navigate to project's 'Backend' director
 Install neccesary packages for frontend, navigate to project's 'Frontend' directory and run in terminal:
 > npm install
 
+Run migrations, to setup the database
+> php artisan migrate
+
+_Also put your TMDB API key in the 'Frontend' directory's .env file_
+
+### Running the project
+Start the backend from the project's 'Backend' directory:
+> php artisan serve
+
+Start the frontend from the project's 'Frontend' directory:
+> npm run dev
+
 ### Technologies used in this project
 > Laravel v11.x, Vue 3.x, Vite 5.x, MySQL, Tailwind CSS, @vladmandic face-api.js library.
 
