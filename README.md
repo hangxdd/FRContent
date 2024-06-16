@@ -21,7 +21,7 @@ Start the frontend from the project's 'Frontend' directory:
 > npm run dev
 
 ### Technologies used in this project
-> Laravel v11.x, Vue 3.x, Vite 5.x, MySQL, Tailwind CSS, @vladmandic face-api.js library.
+> Laravel v11.x, Vue 3.x, Vite 5.x, MySQL, Tailwind CSS, @vladmandic face-api.js library, TMDb API.
 
 ### Project's technical documentation (In Latvian)
 > https://docs.google.com/document/d/156ahZM04Cs7I-NQ0HCRHlvOhK54RjPEBVUHJrf9zwFM/edit?usp=sharing
