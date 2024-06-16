@@ -21,7 +21,7 @@ class HistoryMoviesController extends Controller
 
         if ($existingMovie) {
             // If the movie already exists, return a response indicating this
-            return response()->json('This movie is already in the user\'s history');
+            return response()->json(['message' => 'This movie is already in the user\'s history']);
         }
 
         $history_movie = new HistoryMovie([
@@ -31,7 +31,7 @@ class HistoryMoviesController extends Controller
 
         $history_movie->save();
 
-        return response()->json('Successfully inserted movies into the database');
+        return response()->json(['message' => 'Successfully inserted movies into the database']);
     }
 
     public function getMoviesForUser($userId)
@@ -46,9 +46,9 @@ class HistoryMoviesController extends Controller
         $deletedRows = HistoryMovie::where('user_id', $userId)->delete();
 
         if ($deletedRows > 0)
-            return response()->json('Successfully deleted all history movies for the user');
+            return response()->json(['message' => 'Successfully deleted all history movies for the user']);
         else
-            return response()->json('No history movies found for the user');
+            return response()->json(['message' => 'No history movies found for the user']);
     }
 
     public function deleteMovieForUser($userId, $movieId)
@@ -56,9 +56,8 @@ class HistoryMoviesController extends Controller
         $deletedRows = HistoryMovie::where('user_id', $userId)->where('movie_id', $movieId)->delete();
 
         if ($deletedRows > 0)
-            return response()->json('Successfully deleted the movie for the user');
+            return response()->json(['message' => 'Successfully deleted the movie for the user']);
         else
-            return response()->json('No such movie found for the user');
+            return response()->json(['message' => 'No such movie found for the user']);
     }
-
 }

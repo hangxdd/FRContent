@@ -209,7 +209,7 @@ const submitRegister = async () => {
     .then((response) => {
       if (response.status === 204) {
         toast.success("Registration successful");
-        router.push("/");
+        router.push("/login");
       }
     })
     .catch((error) => {
